@@ -1,0 +1,7 @@
+#COMMAND
+*.exe
+*.exe~
+#ENVs
+* .env
+
+*.test
