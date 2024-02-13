@@ -88,7 +88,6 @@ func Login(c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	token, err := c.Request.Cookie("Authorization")
-	fmt.Print("aaaaaaaaaaaaaa", err, token)
 	if err != nil {
 		// Handle missing cookie error
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization cookie not found"})
