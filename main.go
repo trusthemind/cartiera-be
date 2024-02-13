@@ -20,6 +20,7 @@ func main() {
 	// AUTH 
 	r.POST("/auth/registration", controllers.Register)
 	r.POST("/auth/login", controllers.Login)
+	r.POST("/auth/logout", controllers.Logout)
 
 	// Run Server
 	r.Run()
