@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/trusthemind/go-auth/controllers"
 	"github.com/trusthemind/go-auth/initializers"
+	"github.com/trusthemind/go-auth/middleware"
 )
 
 func init() {
@@ -16,11 +17,12 @@ func init() {
 func main() {
 	r := gin.Default()
 
-
-	// AUTH 
+	// AUTH
 	r.POST("/auth/registration", controllers.Register)
 	r.POST("/auth/login", controllers.Login)
 	r.POST("/auth/logout", controllers.Logout)
+	//using middleware for request
+	r.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
 
 	// Run Server
 	r.Run()
