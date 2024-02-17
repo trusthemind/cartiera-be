@@ -23,6 +23,7 @@ func main() {
 	r.POST("/auth/logout", controllers.Logout)
 	//using middleware for request
 	r.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	r.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 
 	// Run Server
 	r.Run()

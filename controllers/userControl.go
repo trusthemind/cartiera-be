@@ -101,5 +101,5 @@ func Logout(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "cHECK"})
+	c.JSON(http.StatusOK, gin.H{"message": "Middleware is passed"})
 }
