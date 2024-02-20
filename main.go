@@ -15,16 +15,16 @@ func init() {
 }
 
 func main() {
-	r := gin.Default()
+	router := gin.Default()
 
 	// AUTH
-	r.POST("/auth/registration", controllers.Register)
-	r.POST("/auth/login", controllers.Login)
-	r.POST("/auth/logout", controllers.Logout)
+	router.POST("/auth/registration", controllers.Register)
+	router.POST("/auth/login", controllers.Login)
+	router.POST("/auth/logout", controllers.Logout)
 	//using middleware for request
-	r.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
-	r.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 
 	// Run Server
-	r.Run()
+	router.Run()
 }

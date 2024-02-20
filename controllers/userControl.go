@@ -10,14 +10,17 @@ import (
 	"github.com/trusthemind/go-auth/initializers"
 	"github.com/trusthemind/go-auth/models"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func Register(c *gin.Context) {
 	var RequstBody struct {
-		Name     string
-		Email    string
-		Password string
+		gorm.Model
+		Name     string `gorm:"not null"`
+		Email    string `gorm:"not null;unique"`
+		Password string `gorm:"not null;min:8"`
 	}
+
 	if c.Bind(&RequstBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
@@ -45,8 +48,9 @@ func Register(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	var RequstBody struct {
-		Email    string
-		Password string
+		gorm.Model
+		Email    string `gorm:"not null"`
+		Password string `gorm:"not null"`
 	}
 	if c.Bind(&RequstBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
