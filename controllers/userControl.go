@@ -14,19 +14,19 @@ import (
 )
 
 func Register(c *gin.Context) {
-	var RequstBody struct {
+	var RequestBody struct {
 		gorm.Model
 		Name     string `gorm:"not null"`
 		Email    string `gorm:"not null;unique"`
 		Password string `gorm:"not null;min:8"`
 	}
 
-	if c.Bind(&RequstBody) != nil {
+	if c.Bind(&RequestBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(RequstBody.Password), 10)
+	hash, err := bcrypt.GenerateFromPassword([]byte(RequestBody.Password), 10)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to hash password"})
@@ -34,8 +34,8 @@ func Register(c *gin.Context) {
 	}
 
 	user := models.User{
-		Name:     RequstBody.Name,
-		Email:    RequstBody.Email,
+		Name:     RequestBody.Name,
+		Email:    RequestBody.Email,
 		Password: string(hash)}
 	result := initializers.DB.Create(&user)
 
@@ -47,17 +47,17 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var RequstBody struct {
+	var RequestBody struct {
 		gorm.Model
 		Email    string `gorm:"not null"`
 		Password string `gorm:"not null"`
 	}
-	if c.Bind(&RequstBody) != nil {
+	if c.Bind(&RequestBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
 	}
 	var user models.User
-	initializers.DB.First(&user, "email = ?", RequstBody.Email)
+	initializers.DB.First(&user, "email = ?", RequestBody.Email)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
@@ -65,7 +65,7 @@ func Login(c *gin.Context) {
 	}
 
 	//compare the req password with existing password using bcrypt
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(RequstBody.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(RequestBody.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Password"})
 		return

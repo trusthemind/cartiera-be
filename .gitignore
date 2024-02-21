@@ -1,7 +1,12 @@
+#VS CODE
+/test
+/test/*
+/.vscode
+/.vscode/*
 #COMMAND
 *.exe
 *.exe~
 #ENVs
-* .env
+*.env
 
 *.test

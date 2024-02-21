@@ -12,4 +12,4 @@ func LoadEnv() {
 	if err != nil {
 		log.Fatal("loading error: ",err)
 	}
-}
+}	

@@ -16,6 +16,8 @@ func init() {
 
 func main() {
 	router := gin.Default()
+	router.Static("/assets", "/assets")
+	router.MaxMultipartMemory = 8 << 20
 
 	// AUTH
 	router.POST("/auth/registration", controllers.Register)
@@ -23,7 +25,7 @@ func main() {
 	router.POST("/auth/logout", controllers.Logout)
 	//using middleware for request
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
-	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
 	// Run Server
 	router.Run()
