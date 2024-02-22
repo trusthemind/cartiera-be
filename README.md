@@ -1,5 +1,7 @@
 # Date-app Back-end
 
-How to run in terminal
+How to run server with terminal
 
-`CompileDaemon -command="./go-auth"`
+```bash
+CompileDaemon -command="./go-auth"
+```
