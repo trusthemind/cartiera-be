@@ -26,6 +26,8 @@ func main() {
 	router.POST("/create/engine", controllers.CreateEngine)
 	//using middleware for request
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
+
+	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
 	// Run Server
