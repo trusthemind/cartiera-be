@@ -19,14 +19,23 @@ func main() {
 	router.Static("/assets", "/assets")
 	router.MaxMultipartMemory = 8 << 20
 
-	// AUTH
-	router.POST("/auth/registration", controllers.Register)
-	router.POST("/auth/login", controllers.Login)
-	router.POST("/auth/logout", controllers.Logout)
-	router.POST("/create/engine", controllers.CreateEngine)
+	// *AUTH
+	auth := router.Group("/auth")
+	{
+		auth.POST("/registration", controllers.Register)
+		auth.POST("/login", controllers.Login)
+		auth.POST("/logout", controllers.Logout)
+	}
+
+	// *ENGINE
+	engine := router.Group("/engine")
+	{
+		engine.POST("/create", controllers.CreateEngine)
+	}
+
+	// !TEST
 	//using middleware for request
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
-
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
