@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trusthemind/go-auth/controllers"
-	"github.com/trusthemind/go-auth/initializers"
-	"github.com/trusthemind/go-auth/middleware"
+	"github.com/trusthemind/go-cars-app/controllers"
+	"github.com/trusthemind/go-cars-app/initializers"
+	"github.com/trusthemind/go-cars-app/middleware"
 )
 
 func init() {
@@ -23,9 +23,10 @@ func main() {
 	router.POST("/auth/registration", controllers.Register)
 	router.POST("/auth/login", controllers.Login)
 	router.POST("/auth/logout", controllers.Logout)
+	router.POST("/create/engine", controllers.CreateEngine)
 	//using middleware for request
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
-	router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
+	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
 	// Run Server
 	router.Run()

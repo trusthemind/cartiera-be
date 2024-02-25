@@ -3,7 +3,7 @@ package helpers
 import (
 	"errors"
 	"fmt"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 func ExtractClaims(tokenStr string, hmacSecret []byte) (jwt.MapClaims, error) {

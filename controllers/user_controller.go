@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/trusthemind/go-auth/initializers"
-	"github.com/trusthemind/go-auth/models"
+	"github.com/trusthemind/go-cars-app/initializers"
+	"github.com/trusthemind/go-cars-app/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

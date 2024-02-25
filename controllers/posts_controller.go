@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/trusthemind/go-auth/helpers"
-	"github.com/trusthemind/go-auth/initializers"
-	"github.com/trusthemind/go-auth/models"
+	"github.com/trusthemind/go-cars-app/helpers"
+	"github.com/trusthemind/go-cars-app/initializers"
+	"github.com/trusthemind/go-cars-app/models"
 	"gorm.io/gorm"
 )
 
