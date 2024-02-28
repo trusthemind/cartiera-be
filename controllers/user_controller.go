@@ -60,7 +60,7 @@ func Login(c *gin.Context) {
 	initializers.DB.First(&user, "email = ?", RequestBody.Email)
 
 	if user.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
 		return
 	}
 
@@ -75,7 +75,7 @@ func Login(c *gin.Context) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":  user.ID,
 		"name": user.Name,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(), //4 hours expire
+		"exp":  time.Now().Add(time.Hour * 24).Unix(), //24 hours expire
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
