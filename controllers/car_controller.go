@@ -44,7 +44,6 @@ func CreateCar(c *gin.Context) {
 		return
 	}
 	var id = claims["sub"].(float64)
-	log.Println(id, "iddddddddddddddd")
 
 	var user models.User
 	initializers.DB.First(&user, "ID = ?", id)
@@ -75,4 +74,42 @@ func CreateCar(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been created successfully"})
+}
+
+func GetAllCars(c *gin.Context) {
+
+	var cars []models.Car
+	result := initializers.DB.Find(&cars)
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get cars"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"cars": cars})
+}
+
+func GetOwnedCars(c *gin.Context) {
+	var cars []models.Car
+
+	var err error
+	token, err := c.Request.Cookie("Authorization")
+	if err != nil {
+		log.Print(err)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
+	}
+
+	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
+	}
+
+	var id = claims["sub"].(float64)
+
+	log.Print(id)
+	result := initializers.DB.Where("owner_id = ?", id).Find(&cars)
+	log.Print(result)
+
+	c.JSON(http.StatusOK, cars)
 }

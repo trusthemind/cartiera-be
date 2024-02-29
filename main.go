@@ -33,10 +33,12 @@ func main() {
 		engine.POST("/create", controllers.CreateEngine)
 	}
 
-	// *CAR 
+	// *CAR
 	cars := router.Group("/cars")
 	{
-		cars.POST("/create",middleware.RequireAuth, controllers.CreateCar)
+		cars.GET("/get", controllers.GetAllCars)
+		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
+		cars.GET("/my",middleware.RequireAuth,controllers.GetOwnedCars)
 	}
 	// !TEST
 	//using middleware for request
