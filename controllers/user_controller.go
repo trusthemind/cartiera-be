@@ -1,12 +1,15 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/stripe/stripe-go"
+	"github.com/stripe/stripe-go/customer"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
 	"golang.org/x/crypto/bcrypt"
@@ -14,6 +17,7 @@ import (
 )
 
 func Register(c *gin.Context) {
+	stripe.Key = os.Getenv("STRIPE_KEY")
 	var RequestBody struct {
 		gorm.Model
 		Name     string `gorm:"not null"`
@@ -32,8 +36,21 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to hash password"})
 		return
 	}
+	params := &stripe.CustomerParams{
+		Email:    &RequestBody.Email,
+        Name:     &RequestBody.Name,
+	}
+
+	customer, err := customer.New(params)
+
+	if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create customer"})
+        return
+    }
+	log.Print(customer.ID)
 
 	user := models.User{
+		CustomerID: customer.ID,
 		Name:     RequestBody.Name,
 		Email:    RequestBody.Email,
 		Password: string(hash)}

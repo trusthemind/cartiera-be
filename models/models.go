@@ -10,6 +10,7 @@ type User struct {
 	Email    string `form:"email" gorm:"not null;unique"`
 	Password string `form:"password" gorm:"not null"`
 	Avatar   string `form:"avatar" gorm:"not null"`
+	CustomerID string `form:"customer_id" gorm:"not null;unique"`
 	IsAdmin  bool   `form:"is_admin" default:"false"`
 	// Liked    []Car
 }
