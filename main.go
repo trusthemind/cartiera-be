@@ -27,6 +27,12 @@ func main() {
 		auth.POST("/logout", controllers.Logout)
 	}
 
+	// *USERS
+	users := router.Group("/users")
+	{
+		users.PUT("/avatar/update", middleware.RequireAuth, controllers.UploadAvatar)
+	}
+
 	// *ENGINE
 	engine := router.Group("/engine")
 	{
@@ -38,10 +44,9 @@ func main() {
 	{
 		cars.GET("/get", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
-		cars.GET("/my",middleware.RequireAuth,controllers.GetOwnedCars)
+		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
 	}
 	// !TEST
-	//using middleware for request
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)

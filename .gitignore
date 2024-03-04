@@ -1,6 +1,7 @@
 #VS CODE
 /test
 /test/*
+/assets/*
 /.vscode
 /.vscode/*
 #COMMAND
