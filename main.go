@@ -47,6 +47,7 @@ func main() {
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
 	}
 	// !TEST
+	router.POST("/payment_method/create",middleware.RequireAuth, controllers.CreatePaymentMethod)
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
