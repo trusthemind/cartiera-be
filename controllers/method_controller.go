@@ -78,12 +78,16 @@ func CreatePaymentMethod(c *gin.Context) {
 		return
 	}
 
-	// attachParams := &stripe.PaymentMethodAttachParams{
-	// Customer: stripe.String(user.CustomerID),
-	// }
+	attachParams := &stripe.PaymentMethodAttachParams{
+		Customer: stripe.String(user.CustomerID),
+	}
 
-	// attachResult, err := paymentmethod.Attach("", attachParams)
-	c.JSON(http.StatusOK, gin.H{"message": result})
-	// c.JSON(http.StatusOK, gin.H{"message": "Payment method has created successfully"})
+	attachResult, err := paymentmethod.Attach(result.ID, attachParams)
 
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to attach a payment method"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": attachResult})
 }
