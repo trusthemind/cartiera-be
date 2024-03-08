@@ -27,6 +27,7 @@ type PaymentMethod struct {
 	Phone          string         `json:"phone" binding:"required" gorm:"not null"`
 }
 
+// !Add a cheker if a user has 15 cards its failed and allert him about u need to delete one payment method  and after retry again
 func CreatePaymentMethod(c *gin.Context) {
 	var RequestBody PaymentMethod
 
@@ -45,6 +46,7 @@ func CreatePaymentMethod(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
+		return
 	}
 
 	var user models.User
@@ -90,4 +92,33 @@ func CreatePaymentMethod(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": attachResult})
+}
+
+func GetAllPaymentMethod(c *gin.Context) {
+	token, err := c.Request.Cookie("Authorization")
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization cookies not found"})
+		return
+	}
+
+	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
+		return
+	}
+
+	var user models.User
+	var id = claims["sub"].(float64)
+	initializers.DB.First(&user, "ID = ?", id)
+
+	params := &stripe.PaymentMethodListParams{
+		Type:     stripe.String(string(stripe.PaymentMethodTypeCard)),
+		Customer: stripe.String(user.CustomerID),
+	}
+	params.Limit = stripe.Int64(15)
+	result := paymentmethod.List(params)
+
+	c.JSON(http.StatusOK, gin.H{"data": result})
 }

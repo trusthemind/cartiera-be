@@ -42,12 +42,18 @@ func main() {
 	// *CAR
 	cars := router.Group("/cars")
 	{
-		cars.GET("/get", controllers.GetAllCars)
+		cars.GET("/all", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
 	}
+
+	payment_method := router.Group("/payment_method")
+	{
+		payment_method.POST("/create", middleware.RequireAuth, controllers.CreatePaymentMethod)
+		payment_method.GET("/all", middleware.RequireAuth, controllers.GetAllPaymentMethod)
+
+	}
 	// !TEST
-	router.POST("/payment_method/create",middleware.RequireAuth, controllers.CreatePaymentMethod)
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
