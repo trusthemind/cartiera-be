@@ -118,21 +118,22 @@ func GetAllPaymentMethod(c *gin.Context) {
 
 	params := &stripe.PaymentMethodListParams{
 		Type:     stripe.String(string(stripe.PaymentMethodTypeCard)),
-		Customer: stripe.String("cus_PePbCWsn0Gq9r3"),
+		Customer: stripe.String(user.CustomerID),
 	}
 	params.Limit = stripe.Int64(15)
 
 	iterator := paymentmethod.List(params)
-    var paymentMethods []*stripe.PaymentMethod
+	var paymentMethods []*stripe.PaymentMethod
 
-    for iterator.Next() {
-        paymentMethods = append(paymentMethods, iterator.PaymentMethod())
-    }
+	for iterator.Next() {
+		fmt.Print(iterator.Next())
+		paymentMethods = append(paymentMethods, iterator.PaymentMethod())
+	}
 
-    if err := iterator.Err(); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
+	if err := iterator.Err(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, gin.H{"data": paymentMethods})
+	c.JSON(http.StatusOK, gin.H{"length": len(paymentMethods), "data": helpers.SortByTime(paymentMethods)})
 }

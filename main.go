@@ -53,6 +53,11 @@ func main() {
 		payment_method.GET("/all", middleware.RequireAuth, controllers.GetAllPaymentMethod)
 
 	}
+
+	payment_intent := router.Group("/payment_intent")
+	 {
+		payment_intent.POST("/create", middleware.RequireAuth, controllers.CreatePaymentIntent)
+	}
 	// !TEST
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
