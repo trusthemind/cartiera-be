@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -54,7 +55,8 @@ func CreatePaymentMethod(c *gin.Context) {
 	initializers.DB.First(&user, "ID = ?", id)
 
 	exp := strings.Split(RequestBody.Exp, "/")
-	params := &stripe.PaymentMethodParams{Type: stripe.String(string(stripe.PaymentMethodTypeCard)),
+	params := &stripe.PaymentMethodParams{
+		Type: stripe.String(string(stripe.PaymentMethodTypeCard)),
 		Card: &stripe.PaymentMethodCardParams{
 			Number:   stripe.String(RequestBody.Number),
 			ExpMonth: stripe.String(exp[0]),
@@ -62,7 +64,7 @@ func CreatePaymentMethod(c *gin.Context) {
 			CVC:      stripe.String(RequestBody.CVC),
 		},
 		BillingDetails: &stripe.BillingDetailsParams{
-			Name:  stripe.String(user.Email),
+			Name:  stripe.String(user.Name),
 			Email: stripe.String(user.Email),
 			Phone: stripe.String(RequestBody.Phone),
 			Address: &stripe.AddressParams{
@@ -73,7 +75,7 @@ func CreatePaymentMethod(c *gin.Context) {
 		},
 	}
 
-	result, err := paymentmethod.New(params)
+	method, err := paymentmethod.New(params)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create a payment method"})
@@ -84,14 +86,15 @@ func CreatePaymentMethod(c *gin.Context) {
 		Customer: stripe.String(user.CustomerID),
 	}
 
-	attachResult, err := paymentmethod.Attach(result.ID, attachParams)
+	attachResult, err := paymentmethod.Attach(method.ID, attachParams)
+	fmt.Print(attachParams.Customer)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to attach a payment method"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": attachResult})
+	c.JSON(http.StatusOK, gin.H{"data": attachResult})
 }
 
 func GetAllPaymentMethod(c *gin.Context) {
@@ -115,10 +118,21 @@ func GetAllPaymentMethod(c *gin.Context) {
 
 	params := &stripe.PaymentMethodListParams{
 		Type:     stripe.String(string(stripe.PaymentMethodTypeCard)),
-		Customer: stripe.String(user.CustomerID),
+		Customer: stripe.String("cus_PePbCWsn0Gq9r3"),
 	}
 	params.Limit = stripe.Int64(15)
-	result := paymentmethod.List(params)
 
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	iterator := paymentmethod.List(params)
+    var paymentMethods []*stripe.PaymentMethod
+
+    for iterator.Next() {
+        paymentMethods = append(paymentMethods, iterator.PaymentMethod())
+    }
+
+    if err := iterator.Err(); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"data": paymentMethods})
 }
