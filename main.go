@@ -2,9 +2,11 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/trusthemind/go-cars-app/controllers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
+
 )
 
 func init() {
@@ -55,8 +57,11 @@ func main() {
 	}
 
 	payment_intent := router.Group("/payment_intent")
-	 {
+	{
+		payment_intent.GET("/all", middleware.RequireAuth, controllers.GetCustomerIntents)
+		payment_intent.GET("/:id", middleware.RequireAuth, controllers.PaymentIntentByID)
 		payment_intent.POST("/create", middleware.RequireAuth, controllers.CreatePaymentIntent)
+		payment_intent.POST("/cancel", middleware.RequireAuth, controllers.CanceledPaymentIntent)
 	}
 	// !TEST
 	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentmethod"
+
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
@@ -126,7 +127,6 @@ func GetAllPaymentMethod(c *gin.Context) {
 	var paymentMethods []*stripe.PaymentMethod
 
 	for iterator.Next() {
-		fmt.Print(iterator.Next())
 		paymentMethods = append(paymentMethods, iterator.PaymentMethod())
 	}
 
