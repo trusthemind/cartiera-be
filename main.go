@@ -2,8 +2,11 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/trusthemind/go-cars-app/controllers"
+	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
 
@@ -15,11 +18,19 @@ func init() {
 	initializers.SyncDB()
 
 }
+// *SWAGGER SETTUP
+// @title Cars Sales App API
+// @version 0.6
+// @description This is documentation for Cars Sales App API for all user operations
+// @host localhost:3000
+
 
 func main() {
 	router := gin.Default()
 	router.Static("/assets", "/assets")
 	router.MaxMultipartMemory = 8 << 20
+
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// *AUTH
 	auth := router.Group("/auth")

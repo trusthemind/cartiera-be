@@ -1,13 +1,17 @@
 #VS CODE
 /test
 /test/*
+*.test
+
 /assets/*
 /.vscode
 /.vscode/*
+go-cars-app
+
 #COMMAND
 *.exe
 *.exe~
+
 #ENVs
 *.env
-
-*.test
+helpers.txt

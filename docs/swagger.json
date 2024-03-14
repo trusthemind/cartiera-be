@@ -1,0 +1,11 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is documentation for Cars Sales App API for all user operations",
+        "title": "Cars Sales App API",
+        "contact": {},
+        "version": "0.6"
+    },
+    "host": "localhost:3000",
+    "paths": {}
+}

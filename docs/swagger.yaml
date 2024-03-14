@@ -1,0 +1,8 @@
+host: localhost:3000
+info:
+  contact: {}
+  description: This is documentation for Cars Sales App API for all user operations
+  title: Cars Sales App API
+  version: "0.6"
+paths: {}
+swagger: "2.0"
