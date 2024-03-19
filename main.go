@@ -23,8 +23,11 @@ func init() {
 // @version 0.6
 // @description This is documentation for Cars Sales App API for all user operations
 // @host localhost:3000
+// @schemes http
 
-
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	router := gin.Default()
 	router.Static("/assets", "/assets")

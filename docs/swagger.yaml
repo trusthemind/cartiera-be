@@ -1,8 +1,97 @@
+definitions:
+  models.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  models.RequestLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.RequestRegistration:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
 host: localhost:3000
 info:
   contact: {}
   description: This is documentation for Cars Sales App API for all user operations
   title: Cars Sales App API
   version: "0.6"
-paths: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login to app
+      parameters:
+      - description: Email, Password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Login
+  /auth/registration:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: Name, Email, Password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestRegistration'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Registration
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

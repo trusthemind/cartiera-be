@@ -10,20 +10,25 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/customer"
-	"github.com/trusthemind/go-cars-app/initializers"
-	"github.com/trusthemind/go-cars-app/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"github.com/trusthemind/go-cars-app/initializers"
+	"github.com/trusthemind/go-cars-app/models"
 )
 
+// @Tag Authorization
+// @Summary Registration
+// @Description Register a new user
+// @Accept json
+// @Produce json
+// @Param request body models.RequestRegistration true "Name, Email, Password"
+// @Success 200 {object} models.Message
+// @Failure 400 {object} models.Error
+// @Router /auth/registration [post]
 func Register(c *gin.Context) {
 	stripe.Key = os.Getenv("STRIPE_KEY")
-	var RequestBody struct {
-		gorm.Model
-		Name     string `gorm:"not null"`
-		Email    string `gorm:"not null;unique"`
-		Password string `gorm:"not null;min:8"`
-	}
+	var RequestBody models.RequestRegistration
 
 	if c.Bind(&RequestBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
@@ -63,6 +68,15 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
+// @Tag Authorization
+// @Summary Login
+// @Description Login to app
+// @Accept json
+// @Produce json
+// @Param request body models.RequestLogin true "Email, Password"
+// @Success 200 {object} models.Message
+// @Failure 400 {object} models.Error
+// @Router /auth/login [post]
 func Login(c *gin.Context) {
 	var RequestBody struct {
 		gorm.Model
@@ -90,10 +104,10 @@ func Login(c *gin.Context) {
 
 	// create a token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":  user.ID,
-		"name": user.Name,
+		"sub":   user.ID,
+		"name":  user.Name,
 		"admin": user.IsAdmin,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(), //24 hours expire
+		"exp":   time.Now().Add(time.Hour * 24).Unix(), //24 hours expire
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
