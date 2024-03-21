@@ -7,21 +7,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-zoox/fetch"
+
+	"github.com/trusthemind/go-cars-app/models"
 )
-type VINResponse struct {
-    VIN          string   `json:"vin"`
-    Country      string   `json:"country"`
-    Manufacturer string   `json:"manufacturer"`
-    Region       string   `json:"region"`
-    WMI          string   `json:"wmi"`
-    VDS          string   `json:"vds"`
-    VIS          string   `json:"vis"`
-    Years        []int    `json:"years"`
-}
+
+// @Tags VIN
+// @Summary VIN
+// @Description Use VIN-code for more details
+// @Accept json
+// @Produce json
+// @Param request body models.VINRequest true "VIN-code"
+// @Success 200 {object} models.VINResponse
+// @Failure 404 {object} models.Error
+// @Router /vincode/check [post]
 func CheckVin(c *gin.Context) {
-	var RequestBody struct {
-		VIN string `json:"vin_code" binding:"required"`
-	}
+	var RequestBody models.VINRequest
 
 	if c.Bind(&RequestBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
@@ -33,12 +33,13 @@ func CheckVin(c *gin.Context) {
 	response, err := fetch.Get(str, &fetch.Config{Headers: map[string]string{"X-Api-Key": key}})
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get data from VIN code"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Failed to get data from VIN code"})
 		return
 	}
 
-	var vinResponse VINResponse
-	err = json.Unmarshal(response.Body, &vinResponse);	if err != nil {
+	var vinResponse models.VINResponse
+	err = json.Unmarshal(response.Body, &vinResponse)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse VIN response"})
 		return
 	}

@@ -17,7 +17,7 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tag Authorization
+// @Tags Authorization
 // @Summary Registration
 // @Description Register a new user
 // @Accept json
@@ -68,7 +68,7 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-// @Tag Authorization
+// @Tags Authorization
 // @Summary Login
 // @Description Login to app
 // @Accept json

@@ -32,6 +32,34 @@ definitions:
     - name
     - password
     type: object
+  models.VINRequest:
+    properties:
+      vin_code:
+        type: string
+    required:
+    - vin_code
+    type: object
+  models.VINResponse:
+    properties:
+      country:
+        type: string
+      manufacturer:
+        type: string
+      region:
+        type: string
+      vds:
+        type: string
+      vin:
+        type: string
+      vis:
+        type: string
+      wmi:
+        type: string
+      years:
+        items:
+          type: integer
+        type: array
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -63,6 +91,8 @@ paths:
           schema:
             $ref: '#/definitions/models.Error'
       summary: Login
+      tags:
+      - Authorization
   /auth/registration:
     post:
       consumes:
@@ -87,6 +117,34 @@ paths:
           schema:
             $ref: '#/definitions/models.Error'
       summary: Registration
+      tags:
+      - Authorization
+  /vincode/check:
+    post:
+      consumes:
+      - application/json
+      description: Use VIN-code for more details
+      parameters:
+      - description: VIN-code
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.VINRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.VINResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: VIN
+      tags:
+      - VIN
 schemes:
 - http
 securityDefinitions:

@@ -24,6 +24,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Authorization"
+                ],
                 "summary": "Login",
                 "parameters": [
                     {
@@ -61,6 +64,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Authorization"
+                ],
                 "summary": "Registration",
                 "parameters": [
                     {
@@ -82,6 +88,46 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/vincode/check": {
+            "post": {
+                "description": "Use VIN-code for more details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "VIN"
+                ],
+                "summary": "VIN",
+                "parameters": [
+                    {
+                        "description": "VIN-code",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VINRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.VINResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/models.Error"
                         }
@@ -138,6 +184,49 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "models.VINRequest": {
+            "type": "object",
+            "required": [
+                "vin_code"
+            ],
+            "properties": {
+                "vin_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VINResponse": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "manufacturer": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "vds": {
+                    "type": "string"
+                },
+                "vin": {
+                    "type": "string"
+                },
+                "vis": {
+                    "type": "string"
+                },
+                "wmi": {
+                    "type": "string"
+                },
+                "years": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         }

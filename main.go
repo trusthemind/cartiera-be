@@ -9,7 +9,6 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
-
 )
 
 func init() {
@@ -18,6 +17,7 @@ func init() {
 	initializers.SyncDB()
 
 }
+
 // *SWAGGER SETTUP
 // @title Cars Sales App API
 // @version 0.6
