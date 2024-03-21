@@ -4,7 +4,6 @@ import (
 	// "mime/multipart"
 
 	"gorm.io/gorm"
-
 )
 
 type User struct {
@@ -34,7 +33,6 @@ type Car struct {
 	Placement    string `json:"placement" gorm:"not null"`
 }
 
-
 type Engine struct {
 	gorm.Model
 	Name        string
@@ -43,7 +41,7 @@ type Engine struct {
 	Consumption float32
 }
 
-//TODO finish a saving in DB with proper form fields
+// TODO finish a saving in DB with proper form fields
 type PaymentIntent struct {
 	gorm.Model
 }

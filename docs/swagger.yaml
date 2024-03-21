@@ -1,4 +1,46 @@
 definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Car:
+    properties:
+      brand:
+        type: string
+      comment:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      kilometers:
+        type: integer
+      model:
+        type: string
+      ownerID:
+        description: Engine       Engine
+        type: integer
+      owners_number:
+        type: integer
+      placement:
+        type: string
+      price:
+        type: integer
+      status:
+        type: string
+      updatedAt:
+        type: string
+      vin_code:
+        type: string
+      year:
+        type: integer
+    type: object
   models.Error:
     properties:
       error:
@@ -119,6 +161,78 @@ paths:
       summary: Registration
       tags:
       - Authorization
+  /cars/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all cars
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Car'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Cars
+      tags:
+      - Cars
+  /cars/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a car for sale
+      parameters:
+      - description: Car
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Car'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Cars
+      tags:
+      - Cars
+  /cars/my:
+    get:
+      consumes:
+      - application/json
+      description: Get owned Cars
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Car'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Cars
+      tags:
+      - Cars
   /vincode/check:
     post:
       consumes:

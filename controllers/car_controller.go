@@ -6,11 +6,22 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
 )
 
+// @Tags Cars
+// @Summary Cars
+// @Description Create a car for sale
+// @Accept json
+// @Produce json
+// @Param request body models.Car true "Car"
+// @Success 200 {object} models.Message
+// @Failure 400 {object} models.Error
+// @Failure 401 {object} models.Error
+// @Router /cars/create [post]
 func CreateCar(c *gin.Context) {
 	// var RequestBody struct {
 	// 	Brand        string `json:"brand" gorm:"not null"`
@@ -76,6 +87,14 @@ func CreateCar(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been created successfully"})
 }
 
+// @Tags Cars
+// @Summary Cars
+// @Description Get all cars
+// @Accept json
+// @Produce json
+// @Success 200 {object} []models.Car
+// @Failure 400 {object} models.Error
+// @Router /cars/all [get]
 func GetAllCars(c *gin.Context) {
 
 	var cars []models.Car
@@ -88,6 +107,14 @@ func GetAllCars(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"cars": cars})
 }
 
+// @Tags Cars
+// @Summary Cars
+// @Description Get owned Cars
+// @Accept json
+// @Produce json
+// @Success 200 {object} []models.Car
+// @Failure 401 {object} models.Error
+// @Router /cars/my [get]
 func GetOwnedCars(c *gin.Context) {
 	var cars []models.Car
 
