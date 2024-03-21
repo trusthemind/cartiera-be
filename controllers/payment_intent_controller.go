@@ -13,12 +13,18 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
+// @Tags Payment Intent
+// @Summary Payment Intent Operation
+// @Description Create Payment Intent
+// @Accept json
+// @Produce json
+// @Param request body models.RequestLogin true "Email, Password"
+// @Success 200 {object} models.Message
+// @Failure 400 {object} models.Error
+// @Failure 401 {object} models.Error
+// @Router /paymnet_intent/create [post]
 func CreatePaymentIntent(c *gin.Context) {
-	var RequestBody struct {
-		// stripe usend only integers so first its need to * 100 to convert to int and reduce a float numbers
-		Amount        float32 `json:"amount" gorm:"not null" biling:"required"`
-		PaymentMethod string  `json:"payment_method" biling:"required" gorm:"not null"`
-	}
+	var RequestBody models.PaymentIntentCreateRequest
 
 	if c.Bind(&RequestBody) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
@@ -71,6 +77,15 @@ func CreatePaymentIntent(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Payment intent is successfully created"})
 }
 
+// @Tags Payment Intent
+// @Summary Payment Intent Operation
+// @Description Get Customers Payment Intent
+// @Accept json
+// @Produce json
+// @Success 200 {object} []models.PaymentIntentList
+// @Failure 400 {object} models.Error
+// @Failure 401 {object} models.Error
+// @Router /paymnet_intent/create [post]
 func GetCustomerIntents(c *gin.Context) {
 	token, err := c.Request.Cookie("Authorization")
 
@@ -109,6 +124,15 @@ func GetCustomerIntents(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"length": len(paymentIntents), "data": paymentIntents})
 }
 
+// @Tags Payment Intent
+// @Summary Payment Intent Operation
+// @Description Get Payment Intent by ID
+// @Accept json
+// @Produce json
+// @Param payment_id path string true "Payment Intent ID"
+// @Success 200 {object} stripe.PaymentIntent
+// @Failure 400 {object} models.Error
+// @Router /paymnet_intent/:id [post]
 func PaymentIntentByID(c *gin.Context) {
 	var payment_id = c.Param("id")
 

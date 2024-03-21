@@ -1,21 +1,8 @@
 package models
 
 import (
-	// "mime/multipart"
-
 	"gorm.io/gorm"
 )
-
-type User struct {
-	gorm.Model
-	Name       string `form:"name" gorm:"not null"`
-	Email      string `form:"email" gorm:"not null;unique"`
-	Password   string `form:"password" gorm:"not null"`
-	Avatar     string `form:"avatar" gorm:"not null"`
-	CustomerID string `form:"customer_id" gorm:"not null;unique"`
-	IsAdmin    bool   `form:"is_admin" default:"false"`
-	// Liked    []Car
-}
 
 type Car struct {
 	gorm.Model
@@ -42,6 +29,6 @@ type Engine struct {
 }
 
 // TODO finish a saving in DB with proper form fields
-type PaymentIntent struct {
-	gorm.Model
-}
+// type PaymentIntent struct {
+// 	gorm.Model
+// }
