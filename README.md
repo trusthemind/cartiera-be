@@ -18,3 +18,6 @@ or run with command
 ```bash
 go run main.go
 ```
+
+# Docs 
+http://localhost:3000/docs/index.html#/

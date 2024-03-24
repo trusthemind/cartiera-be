@@ -41,6 +41,36 @@ definitions:
       year:
         type: integer
     type: object
+  models.Engine:
+    properties:
+      cilinders:
+        type: integer
+      consumption:
+        type: number
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      fuel:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.EngineRequest:
+    properties:
+      cilinders:
+        type: integer
+      consumption:
+        type: number
+      fuel:
+        type: string
+      name:
+        type: string
+    type: object
   models.Error:
     properties:
       error:
@@ -5075,6 +5105,99 @@ paths:
       summary: Cars
       tags:
       - Cars
+  /engine/all:
+    get:
+      consumes:
+      - application/json
+      description: Get All engines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Engine'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Engine CRUD
+      tags:
+      - Engine
+  /engine/create:
+    post:
+      consumes:
+      - application/json
+      description: Create new Engine
+      parameters:
+      - description: Engine Info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.EngineRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Engine'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Engine CRUD
+      tags:
+      - Engine
+  /engine/delete/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete engine by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Message'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Engine CRUD
+      tags:
+      - Engine
+  /engine/update/:id:
+    put:
+      consumes:
+      - application/json
+      description: Update engine info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Engine'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Engine CRUD
+      tags:
+      - Engine
   /paymnet_intent/:id:
     post:
       consumes:

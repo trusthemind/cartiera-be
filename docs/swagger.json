@@ -201,6 +201,148 @@
                 }
             }
         },
+        "/engine/all": {
+            "get": {
+                "description": "Get All engines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Engine"
+                ],
+                "summary": "Engine CRUD",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Engine"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/create": {
+            "post": {
+                "description": "Create new Engine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Engine"
+                ],
+                "summary": "Engine CRUD",
+                "parameters": [
+                    {
+                        "description": "Engine Info",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EngineRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Engine"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/delete/:id": {
+            "delete": {
+                "description": "Delete engine by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Engine"
+                ],
+                "summary": "Engine CRUD",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Message"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/update/:id": {
+            "put": {
+                "description": "Update engine info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Engine"
+                ],
+                "summary": "Engine CRUD",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Engine"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/paymnet_intent/:id": {
             "post": {
                 "description": "Get Payment Intent by ID",
@@ -379,6 +521,52 @@
                 },
                 "year": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.Engine": {
+            "type": "object",
+            "properties": {
+                "cilinders": {
+                    "type": "integer"
+                },
+                "consumption": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "fuel": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EngineRequest": {
+            "type": "object",
+            "properties": {
+                "cilinders": {
+                    "type": "integer"
+                },
+                "consumption": {
+                    "type": "number"
+                },
+                "fuel": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
