@@ -1,8 +1,13 @@
 # Cars Sales App Back-end
 
 This application is created for sale Cars, make trades more comfortable for customers.
-
-How to run server with terminal
+---
+### Install all dev dependencies
+```bash
+go get all
+```
+---
+### How to run server with terminal
 
 run with Compile Daemon
 ```bash
