@@ -2,6 +2,7 @@ package models
 
 import (
 	"gorm.io/gorm"
+
 )
 
 type Car struct {
@@ -28,6 +29,12 @@ type Engine struct {
 	Consumption float32
 }
 
+type EngineRequest struct {
+	Name        string
+	Fuel        string
+	Cilinders   int32
+	Consumption float32
+}
 // TODO finish a saving in DB with proper form fields
 // type PaymentIntent struct {
 // 	gorm.Model

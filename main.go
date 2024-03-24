@@ -9,13 +9,13 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
+
 )
 
 func init() {
 	initializers.LoadEnv()
 	initializers.ConnectToDB()
 	initializers.SyncDB()
-
 }
 
 // *SWAGGER SETTUP
@@ -24,6 +24,7 @@ func init() {
 // @description This is documentation for Cars Sales App API for all user operations
 // @host localhost:3000
 // @schemes http
+
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
@@ -53,6 +54,10 @@ func main() {
 	engine := router.Group("/engine")
 	{
 		engine.POST("/create", controllers.CreateEngine)
+		engine.GET("/all", controllers.GetAllEngines)
+		// FIXME
+		engine.PUT("/update/:id", controllers.UpdateEngineInfo)
+		engine.DELETE("/delete/:id", controllers.DeleteEngineByID)
 	}
 
 	// *CAR
