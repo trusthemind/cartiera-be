@@ -1,8 +1,8 @@
 package initializers
 
 import (
-	// "fmt"
-	// "log"
+	"fmt"
+	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
