@@ -1,7 +1,6 @@
 #VS CODE
 /test
 /test/*
-*.test
 
 /assets/*
 /.vscode
@@ -14,4 +13,4 @@ go-cars-app
 
 #ENVs
 *.env
-helpers.txt
+*.txt
