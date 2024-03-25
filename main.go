@@ -22,7 +22,7 @@ func init() {
 // @title Cars Sales App API
 // @version 0.6
 // @description This is documentation for Cars Sales App API for all user operations
-// @host localhost:3000
+// @host https://car-sales-app-v2.up.railway.app
 // @schemes http
 
 
