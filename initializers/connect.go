@@ -43,7 +43,6 @@ func ConnectToDB() {
 	if err != nil {
 		panic(err)
 	}
-	slqDB.Close()
 }
 
 func CloseDB() {
