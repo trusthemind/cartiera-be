@@ -10,15 +10,15 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags Engine
-// @Summary Engine CRUD
-// @Description Create new Engine
-// @Accept json
-// @Produce json
-// @Param request body models.EngineRequest true "Engine Info"
-// @Success 200 {object} models.Engine
-// @Failure 400 {object} models.Error
-// @Router /engine/create [post]
+//	@Tags			Engine
+//	@Summary		Engine CRUD
+//	@Description	Create new Engine
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.EngineRequest	true	"Engine Info"
+//	@Success		200		{object}	models.Engine
+//	@Failure		400		{object}	models.Error
+//	@Router			/engine/create [post]
 func CreateEngine(c *gin.Context) {
 	var RequestBody models.Engine
 
@@ -43,14 +43,14 @@ func CreateEngine(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Engine created successfully"})
 }
 
-// @Tags Engine
-// @Summary Engine CRUD
-// @Description Get All engines
-// @Accept json
-// @Produce json
-// @Success 200 {object} []models.Engine
-// @Failure 404 {object} models.Error
-// @Router /engine/all [get]
+//	@Tags			Engine
+//	@Summary		Engine CRUD
+//	@Description	Get All engines
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]models.Engine
+//	@Failure		404	{object}	models.Error
+//	@Router			/engine/all [get]
 func GetAllEngines(c *gin.Context) {
 	engines := []models.Engine{}
 	result := initializers.DB.Find(&engines)
@@ -63,15 +63,15 @@ func GetAllEngines(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": engines})
 }
 
-// @Tags Engine
-// @Summary Engine CRUD
-// @Description Delete engine by ID
-// @Accept json
-// @Produce json
-// @Params engine_id path string "Engine ID"
-// @Success 200 {object} []models.Message
-// @Failure 400 {object} models.Error
-// @Router /engine/delete/:id [delete]
+//	@Tags			Engine
+//	@Summary		Engine CRUD
+//	@Description	Delete engine by ID
+//	@Accept			json
+//	@Produce		json
+//	@Params			engine_id path string "Engine ID"
+//	@Success		200	{object}	[]models.Message
+//	@Failure		400	{object}	models.Error
+//	@Router			/engine/delete/:id [delete]
 func DeleteEngineByID(c *gin.Context) {
 	var engine_id = c.Param("id")
 	engine := models.Engine{}
@@ -86,17 +86,17 @@ func DeleteEngineByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Engine deleted successfully"})
 }
 
-// @Tags Engine
-// @Summary Engine CRUD
-// @Description Update engine info
-// @Accept json
-// @Produce json
-// @Params engine_id path string "Engine ID"
-// @Params request body models.EngineRequest true "Field"
-// @Success 200 {object} []models.Engine
-// @Failure 400 {object} models.Error
-// @Failure 404 {object} models.Error
-// @Router /engine/update/:id [put]
+//	@Tags			Engine
+//	@Summary		Engine CRUD
+//	@Description	Update engine info
+//	@Accept			json
+//	@Produce		json
+//	@Params			engine_id path string "Engine ID"
+//	@Params			request body models.EngineRequest true "Field"
+//	@Success		200	{object}	[]models.Engine
+//	@Failure		400	{object}	models.Error
+//	@Failure		404	{object}	models.Error
+//	@Router			/engine/update/:id [put]
 func UpdateEngineInfo(c *gin.Context) {
 	var RequestBody models.Engine
 	var engine_id = c.Param("id")

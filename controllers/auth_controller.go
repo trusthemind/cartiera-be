@@ -17,15 +17,15 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags Authorization
-// @Summary Registration
-// @Description Register a new user
-// @Accept json
-// @Produce json
-// @Param request body models.RequestRegistration true "Name, Email, Password"
-// @Success 200 {object} models.Message
-// @Failure 400 {object} models.Error
-// @Router /auth/registration [post]
+//	@Tags			Authorization
+//	@Summary		Registration
+//	@Description	Register a new user
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.RequestRegistration	true	"Name, Email, Password"
+//	@Success		200		{object}	models.Message
+//	@Failure		400		{object}	models.Error
+//	@Router			/auth/registration [post]
 func Register(c *gin.Context) {
 	stripe.Key = os.Getenv("STRIPE_KEY")
 	var RequestBody models.RequestRegistration
@@ -68,15 +68,15 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-// @Tags Authorization
-// @Summary Login
-// @Description Login to app
-// @Accept json
-// @Produce json
-// @Param request body models.RequestLogin true "Email, Password"
-// @Success 200 {object} models.Message
-// @Failure 400 {object} models.Error
-// @Router /auth/login [post]
+//	@Tags			Authorization
+//	@Summary		Login
+//	@Description	Login to app
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.RequestLogin	true	"Email, Password"
+//	@Success		200		{object}	models.Message
+//	@Failure		400		{object}	models.Error
+//	@Router			/auth/login [post]
 func Login(c *gin.Context) {
 	var RequestBody struct {
 		gorm.Model
