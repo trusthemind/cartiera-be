@@ -13,16 +13,16 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags Payment Intent
-// @Summary Payment Intent Operation
-// @Description Create Payment Intent
-// @Accept json
-// @Produce json
-// @Param request body models.RequestLogin true "Email, Password"
-// @Success 200 {object} models.Message
-// @Failure 400 {object} models.Error
-// @Failure 401 {object} models.Error
-// @Router /paymnet_intent/create [post]
+//	@Tags			Payment Intent
+//	@Summary		Payment Intent Operation
+//	@Description	Create Payment Intent
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.PaymentIntent	true	"Email, Password"
+//	@Success		200		{object}	models.Message
+//	@Failure		400		{object}	models.Error
+//	@Failure		401		{object}	models.Error
+//	@Router			/paymnet_intent/create [post]
 func CreatePaymentIntent(c *gin.Context) {
 	var RequestBody models.PaymentIntentCreateRequest
 
@@ -74,18 +74,34 @@ func CreatePaymentIntent(c *gin.Context) {
 		return
 	}
 
+	paymentIntent := models.PaymentIntent{
+		StripeID:     result.ID,
+		CustomerID:   result.Customer.ID,
+		ClientSecret: result.ClientSecret,
+		Amount:       float32(result.Amount),
+		CanceledAt:   result.CanceledAt,
+		Currency:     result.Currency,
+		Status:       string(result.Status),
+	}
+	save_result := initializers.DB.Create(&paymentIntent)
+
+	if save_result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to save a payment intent"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "Payment intent is successfully created"})
 }
 
-// @Tags Payment Intent
-// @Summary Payment Intent Operation
-// @Description Get Customers Payment Intent
-// @Accept json
-// @Produce json
-// @Success 200 {object} []models.PaymentIntentList
-// @Failure 400 {object} models.Error
-// @Failure 401 {object} models.Error
-// @Router /paymnet_intent/create [post]
+//	@Tags			Payment Intent
+//	@Summary		Payment Intent Operation
+//	@Description	Get Customers Payment Intents
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]models.PaymentIntentList
+//	@Failure		400	{object}	models.Error
+//	@Failure		401	{object}	models.Error
+//	@Router			/paymnet_intent/all [get]
 func GetCustomerIntents(c *gin.Context) {
 	token, err := c.Request.Cookie("Authorization")
 
@@ -124,15 +140,15 @@ func GetCustomerIntents(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"length": len(paymentIntents), "data": paymentIntents})
 }
 
-// @Tags Payment Intent
-// @Summary Payment Intent Operation
-// @Description Get Payment Intent by ID
-// @Accept json
-// @Produce json
-// @Param payment_id path string true "Payment Intent ID"
-// @Success 200 {object} stripe.PaymentIntent
-// @Failure 400 {object} models.Error
-// @Router /paymnet_intent/:id [post]
+//	@Tags			Payment Intent
+//	@Summary		Payment Intent Operation
+//	@Description	Get Payment Intent by ID
+//	@Accept			json
+//	@Produce		json
+//	@Param			payment_id	path		string	true	"Payment Intent ID"
+//	@Success		200			{object}	models.PaymentIntent
+//	@Failure		400			{object}	models.Error
+//	@Router			/paymnet_intent/:id [get]
 func PaymentIntentByID(c *gin.Context) {
 	var payment_id = c.Param("id")
 
@@ -147,6 +163,15 @@ func PaymentIntentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+//	@Tags			Payment Intent
+//	@Summary		Payment Intent Operation
+//	@Description	Cancel Payment Intent
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		string	true	"id"
+//	@Success		200		{object}	models.Message
+//	@Failure		400		{object}	models.Error
+//	@Router			/paymnet_intent/cancel [post]
 func CanceledPaymentIntent(c *gin.Context) {
 	var RequestBody struct {
 		ID string `json:"payment_intent_id" gorm:"not null" binding:"required"`
@@ -167,41 +192,4 @@ func CanceledPaymentIntent(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Payment intent has been canceled"})
-}
-
-//confirm
-
-func ConfirmPaymentIntent(c *gin.Context) {
-	var RequestBody struct {
-		ID string `json:"payment_intent_id" gorm:"not null" binding:"required"`
-	}
-
-	if c.Bind(&RequestBody) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
-		return
-	}
-
-	params := &stripe.PaymentIntentParams{}
-
-	payment_intent, err := paymentintent.Get(RequestBody.ID, params)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid payment intent ID"})
-		return
-	}
-
-	confirm_params := &stripe.PaymentIntentConfirmParams{
-		PaymentMethod: stripe.String(payment_intent.PaymentMethod.ID),
-	}
-
-	result, err := paymentintent.Confirm(RequestBody.ID, confirm_params)
-
-	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"error": "Failed to confirm payment intent"})
-		return
-	}
-
-	if result.Status == "success" {
-		c.JSON(http.StatusOK, gin.H{"message": "Payment intent is successfully confirmed"})
-	}
 }

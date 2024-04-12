@@ -11,15 +11,15 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags VIN
-// @Summary VIN
-// @Description Use VIN-code for more details
-// @Accept json
-// @Produce json
-// @Param request body models.VINRequest true "VIN-code"
-// @Success 200 {object} models.VINResponse
-// @Failure 404 {object} models.Error
-// @Router /vincode/check [post]
+// @Tags			VIN
+// @Summary		VIN
+// @Description	Use VIN-code for more details
+// @Accept			json
+// @Produce		json
+// @Param			request	body		models.VINRequest	true	"VIN-code"
+// @Success		200		{object}	models.VINResponse
+// @Failure		404		{object}	models.Error
+// @Router			/vincode/check [post]
 func CheckVin(c *gin.Context) {
 	var RequestBody models.VINRequest
 
