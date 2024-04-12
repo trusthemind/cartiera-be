@@ -19,5 +19,7 @@ or run with command
 go run main.go
 ```
 
-# Docs 
-http://localhost:3000/docs/index.html#/
+
+## Helpers
+- [License dependency checker](licenses.csv)
+- [Swagger](https://car-sales-app-v2.up.railway.app/docs/index.html)
