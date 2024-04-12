@@ -2,8 +2,6 @@ module github.com/trusthemind/go-cars-app
 
 go 1.21
 
-toolchain go1.22.2
-
 require (
 	github.com/go-zoox/core-utils v1.4.1
 	github.com/go-zoox/fetch v1.8.1
