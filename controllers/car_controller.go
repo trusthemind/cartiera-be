@@ -142,3 +142,39 @@ func GetOwnedCars(c *gin.Context) {
 
 	c.JSON(http.StatusOK, cars)
 }
+
+
+func DeleteCarByID(c *gin.Context) {
+    var car models.Car
+    carID := c.Param("id")
+
+    token, err := c.Request.Cookie("Authorization")
+    if err != nil {
+        log.Print(err)
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+        return
+    }
+
+    claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+        return
+    }
+
+    userID, ok := claims["sub"].(float64)
+    if !ok {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get user ID"})
+        return
+    }
+
+    result := initializers.DB.Where("ID = ?", carID).Where("owner_id = ?", userID).Delete(&car)
+    if result.RowsAffected == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"error": "This car is not found"})
+        return
+    } else if result.Error != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully deleted"})
+}

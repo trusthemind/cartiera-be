@@ -64,6 +64,7 @@ func main() {
 		cars.GET("/all", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
+		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 
 	payment_method := router.Group("/payment_method")

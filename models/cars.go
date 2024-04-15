@@ -30,3 +30,8 @@ type Engine struct {
 	Cilinders   int32   `json:"ciliders" gorm:"default:0"`
 	Consumption float32 `json:"consumption" gorm:"default:0"`
 }
+
+
+type Detail struct {
+
+}
