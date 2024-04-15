@@ -17,14 +17,15 @@ definitions:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
+      engineID:
+        type: integer
       id:
         type: integer
       kilometers:
         type: integer
       model:
         type: string
-      ownerID:
-        description: Engine       Engine
+      owner_id:
         type: integer
       owners_number:
         type: integer
@@ -43,7 +44,9 @@ definitions:
     type: object
   models.Engine:
     properties:
-      cilinders:
+      brand:
+        type: string
+      ciliders:
         type: integer
       consumption:
         type: number
@@ -58,17 +61,6 @@ definitions:
       name:
         type: string
       updatedAt:
-        type: string
-    type: object
-  models.EngineRequest:
-    properties:
-      cilinders:
-        type: integer
-      consumption:
-        type: number
-      fuel:
-        type: string
-      name:
         type: string
     type: object
   models.Error:
@@ -86,7 +78,7 @@ definitions:
       _id:
         type: string
       amount:
-        type: number
+        type: integer
       canceled:
         type: integer
       createdAt:
@@ -297,11 +289,16 @@ paths:
       summary: Cars
       tags:
       - Cars
-  /engine/all:
+  /engine:
     get:
       consumes:
       - application/json
       description: Get All engines
+      parameters:
+      - description: Engine Brand
+        in: query
+        name: brand
+        type: string
       produces:
       - application/json
       responses:
@@ -329,7 +326,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.EngineRequest'
+          $ref: '#/definitions/models.Engine'
       produces:
       - application/json
       responses:

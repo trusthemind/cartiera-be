@@ -205,7 +205,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/engine/all": {
+        "/engine": {
             "get": {
                 "description": "Get All engines",
                 "consumes": [
@@ -218,6 +218,14 @@ const docTemplate = `{
                     "Engine"
                 ],
                 "summary": "Engine CRUD",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Engine Brand",
+                        "name": "brand",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -257,7 +265,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.EngineRequest"
+                            "$ref": "#/definitions/models.Engine"
                         }
                     }
                 ],
@@ -578,6 +586,9 @@ const docTemplate = `{
                 "deletedAt": {
                     "$ref": "#/definitions/gorm.DeletedAt"
                 },
+                "engineID": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -587,8 +598,7 @@ const docTemplate = `{
                 "model": {
                     "type": "string"
                 },
-                "ownerID": {
-                    "description": "Engine       Engine",
+                "owner_id": {
                     "type": "integer"
                 },
                 "owners_number": {
@@ -617,7 +627,10 @@ const docTemplate = `{
         "models.Engine": {
             "type": "object",
             "properties": {
-                "cilinders": {
+                "brand": {
+                    "type": "string"
+                },
+                "ciliders": {
                     "type": "integer"
                 },
                 "consumption": {
@@ -639,23 +652,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.EngineRequest": {
-            "type": "object",
-            "properties": {
-                "cilinders": {
-                    "type": "integer"
-                },
-                "consumption": {
-                    "type": "number"
-                },
-                "fuel": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 }
             }
@@ -683,7 +679,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "amount": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "canceled": {
                     "type": "integer"
