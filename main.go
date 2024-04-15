@@ -9,7 +9,6 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
-
 )
 
 func init() {
@@ -25,10 +24,9 @@ func init() {
 //	@host			localhost:3000
 //	@schemes		http
 
-
-//	@securityDefinitions.apikey	ApiKeyAuth
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
 func main() {
 	router := gin.Default()
 	router.Static("/assets", "/assets")
@@ -53,10 +51,10 @@ func main() {
 	// *ENGINE
 	engine := router.Group("/engine")
 	{
-		engine.POST("/create", controllers.CreateEngine)
-		engine.GET("/all", controllers.GetAllEngines)
+		engine.GET("", controllers.GetAllEngines)
+		engine.POST("/create", middleware.RequireAuth, controllers.CreateEngine)
 		// FIXME
-		engine.PUT("/update/:id", controllers.UpdateEngineInfo)
+		engine.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateEngineInfo)
 		engine.DELETE("/delete/:id", controllers.DeleteEngineByID)
 	}
 

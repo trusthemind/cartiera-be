@@ -7,8 +7,8 @@ import (
 
 type Car struct {
 	gorm.Model
-	// Engine       Engine
-	OwnerID      int
+	OwnerID      int `json:"owner_id" gorm:"not null"`
+	EngineID     int
 	OwnerComment string `json:"comment" gorm:"default:null"`
 	Year         int32  `json:"year" gorm:"not null"`
 	OwnersNumber int32  `json:"owners_number" gorm:"not null"`
@@ -21,21 +21,12 @@ type Car struct {
 	Placement    string `json:"placement" gorm:"not null"`
 }
 
+// !Electrical version of engine Double check
 type Engine struct {
 	gorm.Model
-	Name        string
-	Fuel        string
-	Cilinders   int32
-	Consumption float32
+	Brand       string  `json:"brand" gorm:"not null"`
+	Name        string  `json:"name" gorm:"not null"`
+	Fuel        string  `json:"fuel" gorm:"default:0"`
+	Cilinders   int32   `json:"ciliders" gorm:"default:0"`
+	Consumption float32 `json:"consumption" gorm:"default:0"`
 }
-
-type EngineRequest struct {
-	Name        string
-	Fuel        string
-	Cilinders   int32
-	Consumption float32
-}
-// TODO finish a saving in DB with proper form fields
-// type PaymentIntent struct {
-// 	gorm.Model
-// }
