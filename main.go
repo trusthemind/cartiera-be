@@ -9,6 +9,7 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
+
 )
 
 func init() {
@@ -53,7 +54,6 @@ func main() {
 	{
 		engine.GET("", controllers.GetAllEngines)
 		engine.POST("/create", middleware.RequireAuth, controllers.CreateEngine)
-		// FIXME
 		engine.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateEngineInfo)
 		engine.DELETE("/delete/:id", controllers.DeleteEngineByID)
 	}
@@ -64,6 +64,7 @@ func main() {
 		cars.GET("/all", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
+		cars.PUT("/update/:id",middleware.RequireAuth, controllers.UpdateCarByID)
 		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 

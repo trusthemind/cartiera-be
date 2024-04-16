@@ -106,31 +106,31 @@ func DeleteEngineByID(c *gin.Context) {
 // @Failure		404	{object}	models.Error
 // @Router			/engine/update/:id [put]
 func UpdateEngineInfo(c *gin.Context) {
-    var RequestBody map[string]interface{}
-    var engineID = c.Param("id")
+	var RequestBody map[string]interface{}
+	var engineID = c.Param("id")
 
-    if err := c.BindJSON(&RequestBody); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
-        return
-    }
+	if err := c.BindJSON(&RequestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
+		return
+	}
 
-    engine := models.Engine{}
-    if result := initializers.DB.First(&engine, "ID = ?", engineID); result.Error != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Engine not found"})
-        return
-    }
+	engine := models.Engine{}
+	if result := initializers.DB.First(&engine, "ID = ?", engineID); result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Engine not found"})
+		return
+	}
 
-    dbFields := map[string]interface{}{}
-    for key, value := range RequestBody {
-        if key != "name" {
-            dbFields[key] = value
-        }
-    }
+	dbFields := map[string]interface{}{}
+	for key, value := range RequestBody {
+		if key != "name" {
+			dbFields[key] = value
+		}
+	}
 
-    if err := initializers.DB.Model(&engine).Updates(dbFields).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update engine"})
-        return
-    }
+	if err := initializers.DB.Model(&engine).Updates(dbFields).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update engine"})
+		return
+	}
 
-    c.JSON(http.StatusOK, gin.H{"message": "Engine updated successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Engine updated successfully"})
 }

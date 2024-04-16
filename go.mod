@@ -3,7 +3,7 @@ module github.com/trusthemind/go-cars-app
 go 1.21
 
 require (
-	github.com/go-zoox/core-utils v1.4.1
+	github.com/go-zoox/core-utils v1.4.1 // indirect
 	github.com/go-zoox/fetch v1.8.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/swaggo/gin-swagger v1.6.0
