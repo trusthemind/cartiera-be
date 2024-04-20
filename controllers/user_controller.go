@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/trusthemind/go-cars-app/helpers"
-
 )
 
 func UploadAvatar(c *gin.Context) {
@@ -21,7 +20,7 @@ func UploadAvatar(c *gin.Context) {
 	}
 	fileName := uuid.New().String() + filepath.Ext(file.Filename)
 
-	if err := c.SaveUploadedFile(file, "assets/"+fileName); err != nil {
+	if err := c.SaveUploadedFile(file, "uploads/"+fileName); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save avatar file"})
 		return
 	}
@@ -41,7 +40,7 @@ func UploadAvatar(c *gin.Context) {
 
 	var id = claims["sub"].(float64)
 
-	avatarPath := "assets/" + fileName
+	avatarPath := "uploads/" + fileName
 	if err := helpers.UpdateAvatar(uint(id), avatarPath); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update avatar path in the database"})
 		return

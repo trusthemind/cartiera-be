@@ -85,7 +85,7 @@ func CreateCar(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create car"})
 		return
 	}
-
+	
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been created successfully"})
 }
 
@@ -177,4 +177,51 @@ func DeleteCarByID(c *gin.Context) {
     }
 
     c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully deleted"})
+}
+
+func UpdateCarByID(c *gin.Context) {
+	var requestBody map[string]interface{}
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
+		return
+	}
+
+	carID := c.Param("id")
+	car := models.Car{}
+
+	token, err := c.Request.Cookie("Authorization")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
+	}
+
+	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID, ok := claims["sub"].(float64)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get user ID"})
+		return
+	}
+
+	dbFields := map[string]interface{}{}
+	for key, value := range requestBody {
+		if key != "owner_id" && key != "vin_code" {
+			dbFields[key] = value
+		}
+	}
+
+	result := initializers.DB.Model(&car).Where("ID = ?", carID).Where("owner_id = ?", userID).Updates(dbFields)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "This car is not found"})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully updated"})
 }

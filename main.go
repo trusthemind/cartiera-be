@@ -9,7 +9,6 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
-
 )
 
 func init() {
@@ -18,7 +17,7 @@ func init() {
 	initializers.SyncDB()
 }
 
-// *SWAGGER SETTUP
+// *SWAGGER SETUP
 //	@title			Cars Sales App API
 //	@version		0.6
 //	@description	This is documentation for Cars Sales App API for all user operations
@@ -30,7 +29,7 @@ func init() {
 // @name						Authorization
 func main() {
 	router := gin.Default()
-	router.Static("/assets", "/assets")
+	router.Static("/uploads", "/uploads")
 	router.MaxMultipartMemory = 8 << 20
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -64,7 +63,7 @@ func main() {
 		cars.GET("/all", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
-		cars.PUT("/update/:id",middleware.RequireAuth, controllers.UpdateCarByID)
+		cars.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateCarByID)
 		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 
