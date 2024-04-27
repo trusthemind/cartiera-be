@@ -2,7 +2,7 @@
 /test
 /test/*
 
-/assets/*
+/uploads/*
 /.vscode
 /.vscode/*
 go-cars-app

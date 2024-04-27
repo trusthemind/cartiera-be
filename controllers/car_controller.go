@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -13,31 +14,25 @@ import (
 )
 
 // @Tags			Cars
-// @Summary		Cars
+// @Summary		Cars CRUD
 // @Description	Create a car for sale
-// @Accept			json
+// @Accept		multipart/form-data
 // @Produce		json
-// @Param			request	body		models.Car	true	"Car"
+// @Param		data formData object true "Car"
+// @Param		upload[] formData array true "Photos"
 // @Success		200		{object}	models.Message
 // @Failure		400		{object}	models.Error
 // @Failure		401		{object}	models.Error
 // @Router			/cars/create [post]
 func CreateCar(c *gin.Context) {
-	// var RequestBody struct {
-	// 	Brand        string `json:"brand" gorm:"not null"`
-	// 	CarModel     string `json:"model" gorm:"not null"`
-	// 	Year         int32  `json:"year" gorm:"not null"`
-	// 	Price        int64  `json:"price" gorm:"not null"`
-	// 	Status       string `json:"status" gorm:"not null"`
-	// 	VinCode      string `json:"vin_code" gorm:"not null"`
-	// 	Kilometers   int64  `json:"kilometers" default:"0"`
-	// 	Placement    string `json:"placement" gorm:"not null"`
-	// 	OwnersNumber int32  `json:"owners" default:"0"`
-	// 	OwnerComment string `json:"comment"`
-	// }
-	var RequestBody models.Car
+	form, _ := c.MultipartForm()
+	files := form.File["upload[]"]
+	data := c.Request.FormValue("data")
 
-	if c.Bind(&RequestBody) != nil {
+	var RequestData models.Car
+	json.Unmarshal([]byte(data), &RequestData)
+
+	if c.Bind(&RequestData) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
 		return
 	}
@@ -64,23 +59,34 @@ func CreateCar(c *gin.Context) {
 		return
 	}
 
+	if len(files) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No uploaded files provided"})
+		return
+	}
+	result, ok, err := helpers.SavePhotoToTable(c, files)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
 	car := models.Car{
 		OwnerID:      int(user.ID),
-		Brand:        RequestBody.Brand,
-		CarModel:     RequestBody.CarModel,
-		Year:         RequestBody.Year,
-		Price:        RequestBody.Price,
-		Status:       RequestBody.Status,
-		VinCode:      RequestBody.VinCode,
-		Kilometers:   RequestBody.Kilometers,
-		Placement:    RequestBody.Placement,
-		OwnersNumber: RequestBody.OwnersNumber,
-		OwnerComment: RequestBody.OwnerComment,
+		EngineID:     RequestData.EngineID,
+		Brand:        RequestData.Brand,
+		CarModel:     RequestData.CarModel,
+		Year:         RequestData.Year,
+		Price:        RequestData.Price,
+		Photos:       result,
+		Status:       RequestData.Status,
+		VinCode:      RequestData.VinCode,
+		Kilometers:   RequestData.Kilometers,
+		Placement:    RequestData.Placement,
+		OwnersNumber: RequestData.OwnersNumber,
+		OwnerComment: RequestData.OwnerComment,
 	}
-	result := initializers.DB.Create(&car)
+	create_result := initializers.DB.Create(&car)
 
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create car"})
+	if create_result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create car", "Asd": create_result.Error.Error()})
 		return
 	}
 
@@ -88,7 +94,7 @@ func CreateCar(c *gin.Context) {
 }
 
 // @Tags			Cars
-// @Summary		Cars
+// @Summary		Cars CRUD
 // @Description	Get all cars
 // @Accept			json
 // @Produce		json
@@ -96,7 +102,6 @@ func CreateCar(c *gin.Context) {
 // @Failure		400	{object}	models.Error
 // @Router			/cars/all [get]
 func GetAllCars(c *gin.Context) {
-
 	var cars []models.Car
 	result := initializers.DB.Find(&cars)
 
@@ -104,11 +109,11 @@ func GetAllCars(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get cars"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"cars": cars})
+	c.JSON(http.StatusOK, gin.H{"data": cars})
 }
 
 // @Tags			Cars
-// @Summary		Cars
+// @Summary		Cars CRUD
 // @Description	Get owned Cars
 // @Accept			json
 // @Produce		json
@@ -139,4 +144,105 @@ func GetOwnedCars(c *gin.Context) {
 	log.Print(result)
 
 	c.JSON(http.StatusOK, cars)
+}
+
+// @Tags			Cars
+// @Summary		Cars CRUD
+// @Description	Delete car by ID
+// @Accept			json
+// @Produce		json
+// @Params			car_id path string "Car ID"
+// @Success		200	{object}	[]models.Message
+// @Failure		400	{object}	models.Error
+// @Failure		401	{object}	models.Error
+// @Router			/cars/delete/:id [delete]
+func DeleteCarByID(c *gin.Context) {
+	var car models.Car
+	carID := c.Param("id")
+
+	token, err := c.Request.Cookie("Authorization")
+	if err != nil {
+		log.Print(err)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
+	}
+
+	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID, ok := claims["sub"].(float64)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get user ID"})
+		return
+	}
+
+	result := initializers.DB.Where("ID = ?", carID).Where("owner_id = ?", userID).Delete(&car)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "This car is not found"})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully deleted"})
+}
+
+// @Tags			Cars
+// @Summary		Cars CRUD
+// @Description	Update car by ID
+// @Produce		json
+// @Params			car_id path string "Car ID"
+// @Success		200	{object}	[]models.Message
+// @Failure		400	{object}	models.Error
+// @Failure		401	{object}	models.Error
+// @Router			/cars/update/:id [put]
+func UpdateCarByID(c *gin.Context) {
+	var requestBody map[string]interface{}
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
+		return
+	}
+
+	carID := c.Param("id")
+	car := models.Car{}
+
+	token, err := c.Request.Cookie("Authorization")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
+	}
+
+	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID, ok := claims["sub"].(float64)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get user ID"})
+		return
+	}
+
+	dbFields := map[string]interface{}{}
+	for key, value := range requestBody {
+		if key != "owner_id" && key != "vin_code" {
+			dbFields[key] = value
+		}
+	}
+
+	result := initializers.DB.Model(&car).Where("ID = ?", carID).Where("owner_id = ?", userID).Updates(dbFields)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "This car is not found"})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully updated"})
 }

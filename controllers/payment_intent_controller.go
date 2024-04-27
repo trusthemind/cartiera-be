@@ -13,16 +13,16 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-//	@Tags			Payment Intent
-//	@Summary		Payment Intent Operation
-//	@Description	Create Payment Intent
-//	@Accept			json
-//	@Produce		json
-//	@Param			request	body		models.PaymentIntent	true	"Email, Password"
-//	@Success		200		{object}	models.Message
-//	@Failure		400		{object}	models.Error
-//	@Failure		401		{object}	models.Error
-//	@Router			/paymnet_intent/create [post]
+// @Tags			Payment Intent
+// @Summary		Payment Intent Operation
+// @Description	Create Payment Intent
+// @Accept			json
+// @Produce		json
+// @Param			request	body		models.PaymentIntent	true	"Email, Password"
+// @Success		200		{object}	models.Message
+// @Failure		400		{object}	models.Error
+// @Failure		401		{object}	models.Error
+// @Router			/paymnet_intent/create [post]
 func CreatePaymentIntent(c *gin.Context) {
 	var RequestBody models.PaymentIntentCreateRequest
 
@@ -47,8 +47,8 @@ func CreatePaymentIntent(c *gin.Context) {
 
 	var user models.User
 	var id = claims["sub"].(float64)
-	var amount = helpers.ConvertAndRound(RequestBody.Amount, true)
 	initializers.DB.First(&user, "ID = ?", id)
+	var amount = helpers.ConvertAndRound(RequestBody.Amount, true)
 
 	params := &stripe.PaymentIntentParams{
 		Amount:        stripe.Int64(amount),
@@ -78,7 +78,7 @@ func CreatePaymentIntent(c *gin.Context) {
 		StripeID:     result.ID,
 		CustomerID:   result.Customer.ID,
 		ClientSecret: result.ClientSecret,
-		Amount:       float32(result.Amount),
+		Amount:       result.Amount,
 		CanceledAt:   result.CanceledAt,
 		Currency:     result.Currency,
 		Status:       string(result.Status),
@@ -93,15 +93,15 @@ func CreatePaymentIntent(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Payment intent is successfully created"})
 }
 
-//	@Tags			Payment Intent
-//	@Summary		Payment Intent Operation
-//	@Description	Get Customers Payment Intents
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	[]models.PaymentIntentList
-//	@Failure		400	{object}	models.Error
-//	@Failure		401	{object}	models.Error
-//	@Router			/paymnet_intent/all [get]
+// @Tags			Payment Intent
+// @Summary		Payment Intent Operation
+// @Description	Get Customers Payment Intents
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	[]models.PaymentIntentList
+// @Failure		400	{object}	models.Error
+// @Failure		401	{object}	models.Error
+// @Router			/paymnet_intent/all [get]
 func GetCustomerIntents(c *gin.Context) {
 	token, err := c.Request.Cookie("Authorization")
 
@@ -126,10 +126,22 @@ func GetCustomerIntents(c *gin.Context) {
 	}
 
 	var paymentIntents []*stripe.PaymentIntent
+	var responceArray []*models.PaymentIntent
+	var responceItem *models.PaymentIntent
 	interator := paymentintent.List(params)
 
 	for interator.Next() {
-		paymentIntents = append(paymentIntents, interator.PaymentIntent())
+		item := interator.PaymentIntent()
+		responceItem = &models.PaymentIntent{
+			StripeID:   item.ID,
+			Status:     string(item.Status),
+			Currency:   item.Currency,
+			CustomerID: item.Customer.ID,
+			CanceledAt: item.CanceledAt,
+			Amount:     item.Amount,
+		}
+		paymentIntents = append(paymentIntents, item)
+		responceArray = append(responceArray, responceItem)
 	}
 
 	if err := interator.Err(); err != nil {
@@ -137,18 +149,18 @@ func GetCustomerIntents(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"length": len(paymentIntents), "data": paymentIntents})
+	c.JSON(http.StatusOK, gin.H{"length": len(responceArray), "data": responceArray})
 }
 
-//	@Tags			Payment Intent
-//	@Summary		Payment Intent Operation
-//	@Description	Get Payment Intent by ID
-//	@Accept			json
-//	@Produce		json
-//	@Param			payment_id	path		string	true	"Payment Intent ID"
-//	@Success		200			{object}	models.PaymentIntent
-//	@Failure		400			{object}	models.Error
-//	@Router			/paymnet_intent/:id [get]
+// @Tags			Payment Intent
+// @Summary		Payment Intent Operation
+// @Description	Get Payment Intent by ID
+// @Accept			json
+// @Produce		json
+// @Param			payment_id	path		string	true	"Payment Intent ID"
+// @Success		200			{object}	models.PaymentIntent
+// @Failure		400			{object}	models.Error
+// @Router			/paymnet_intent/:id [get]
 func PaymentIntentByID(c *gin.Context) {
 	var payment_id = c.Param("id")
 
@@ -163,15 +175,15 @@ func PaymentIntentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-//	@Tags			Payment Intent
-//	@Summary		Payment Intent Operation
-//	@Description	Cancel Payment Intent
-//	@Accept			json
-//	@Produce		json
-//	@Param			request	body		string	true	"id"
-//	@Success		200		{object}	models.Message
-//	@Failure		400		{object}	models.Error
-//	@Router			/paymnet_intent/cancel [post]
+// @Tags			Payment Intent
+// @Summary		Payment Intent Operation
+// @Description	Cancel Payment Intent
+// @Accept			json
+// @Produce		json
+// @Param			request	body		string	true	"id"
+// @Success		200		{object}	models.Message
+// @Failure		400		{object}	models.Error
+// @Router			/paymnet_intent/cancel [post]
 func CanceledPaymentIntent(c *gin.Context) {
 	var RequestBody struct {
 		ID string `json:"payment_intent_id" gorm:"not null" binding:"required"`

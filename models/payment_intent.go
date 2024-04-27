@@ -25,6 +25,6 @@ type PaymentIntent struct {
 	Currency     string  `json:"currency" gorm:"not null"`
 	CustomerID   string  `json:"customer" gorm:"not null"`
 	CanceledAt   int64   `json:"canceled" gorm:"not null"`
-	Amount       float32 `json:"amount" gorm:"not null"`
+	Amount       int64 `json:"amount" gorm:"not null"`
 	ClientSecret string  `json:"secret" gorm:"not null"`
 }

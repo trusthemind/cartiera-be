@@ -107,7 +107,7 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -131,6 +131,57 @@ const docTemplate = `{
             "post": {
                 "description": "Create a car for sale",
                 "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Cars CRUD",
+                "parameters": [
+                    {
+                        "type": "object",
+                        "description": "Car",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "description": "Photos",
+                        "name": "upload[]",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cars/delete/:id": {
+            "delete": {
+                "description": "Delete car by ID",
+                "consumes": [
                     "application/json"
                 ],
                 "produces": [
@@ -139,23 +190,15 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
-                "parameters": [
-                    {
-                        "description": "Car",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Car"
-                        }
-                    }
-                ],
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Message"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Message"
+                            }
                         }
                     },
                     "400": {
@@ -185,7 +228,7 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -205,7 +248,42 @@ const docTemplate = `{
                 }
             }
         },
-        "/engine/all": {
+        "/cars/update/:id": {
+            "put": {
+                "description": "Update car by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Cars CRUD",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Message"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine": {
             "get": {
                 "description": "Get All engines",
                 "consumes": [
@@ -218,6 +296,14 @@ const docTemplate = `{
                     "Engine"
                 ],
                 "summary": "Engine CRUD",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Engine Brand",
+                        "name": "brand",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -257,7 +343,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.EngineRequest"
+                            "$ref": "#/definitions/models.Engine"
                         }
                     }
                 ],
@@ -569,30 +655,27 @@ const docTemplate = `{
                 "brand": {
                     "type": "string"
                 },
-                "comment": {
+                "car_model": {
                     "type": "string"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "id": {
+                "engine_id": {
                     "type": "integer"
                 },
                 "kilometers": {
+                    "description": "Photos       pq.StringArray ` + "`" + `gorm:\"default:null\" sql:\",array\"` + "`" + `",
                     "type": "integer"
                 },
-                "model": {
+                "owner_comment": {
                     "type": "string"
                 },
-                "ownerID": {
-                    "description": "Engine       Engine",
+                "owner_id": {
                     "type": "integer"
                 },
                 "owners_number": {
                     "type": "integer"
+                },
+                "photos": {
+                    "type": "string"
                 },
                 "placement": {
                     "type": "string"
@@ -601,9 +684,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 },
                 "vin_code": {
@@ -617,7 +697,10 @@ const docTemplate = `{
         "models.Engine": {
             "type": "object",
             "properties": {
-                "cilinders": {
+                "brand": {
+                    "type": "string"
+                },
+                "ciliders": {
                     "type": "integer"
                 },
                 "consumption": {
@@ -639,23 +722,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.EngineRequest": {
-            "type": "object",
-            "properties": {
-                "cilinders": {
-                    "type": "integer"
-                },
-                "consumption": {
-                    "type": "number"
-                },
-                "fuel": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 }
             }
@@ -683,7 +749,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "amount": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "canceled": {
                     "type": "integer"

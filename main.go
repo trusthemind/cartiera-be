@@ -9,7 +9,6 @@ import (
 	_ "github.com/trusthemind/go-cars-app/docs"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
-
 )
 
 func init() {
@@ -18,20 +17,19 @@ func init() {
 	initializers.SyncDB()
 }
 
-// *SWAGGER SETTUP
+// *SWAGGER SETUP
 //	@title			Cars Sales App API
 //	@version		0.6
 //	@description	This is documentation for Cars Sales App API for all user operations
 //	@host			localhost:3000
 //	@schemes		http
 
-
-//	@securityDefinitions.apikey	ApiKeyAuth
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
 func main() {
 	router := gin.Default()
-	router.Static("/assets", "/assets")
+	router.Static("/uploads", "/uploads")
 	router.MaxMultipartMemory = 8 << 20
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -53,10 +51,9 @@ func main() {
 	// *ENGINE
 	engine := router.Group("/engine")
 	{
-		engine.POST("/create", controllers.CreateEngine)
-		engine.GET("/all", controllers.GetAllEngines)
-		// FIXME
-		engine.PUT("/update/:id", controllers.UpdateEngineInfo)
+		engine.GET("", controllers.GetAllEngines)
+		engine.POST("/create", middleware.RequireAuth, controllers.CreateEngine)
+		engine.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateEngineInfo)
 		engine.DELETE("/delete/:id", controllers.DeleteEngineByID)
 	}
 
@@ -66,6 +63,8 @@ func main() {
 		cars.GET("/all", controllers.GetAllCars)
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
+		cars.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateCarByID)
+		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 
 	payment_method := router.Group("/payment_method")
@@ -83,7 +82,7 @@ func main() {
 		payment_intent.POST("/cancel", middleware.RequireAuth, controllers.CanceledPaymentIntent)
 	}
 	// !TEST
-	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
