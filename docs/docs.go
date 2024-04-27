@@ -107,7 +107,7 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -131,6 +131,57 @@ const docTemplate = `{
             "post": {
                 "description": "Create a car for sale",
                 "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Cars CRUD",
+                "parameters": [
+                    {
+                        "type": "object",
+                        "description": "Car",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "description": "Photos",
+                        "name": "upload[]",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cars/delete/:id": {
+            "delete": {
+                "description": "Delete car by ID",
+                "consumes": [
                     "application/json"
                 ],
                 "produces": [
@@ -139,23 +190,15 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
-                "parameters": [
-                    {
-                        "description": "Car",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Car"
-                        }
-                    }
-                ],
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Message"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Message"
+                            }
                         }
                     },
                     "400": {
@@ -185,7 +228,7 @@ const docTemplate = `{
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Cars",
+                "summary": "Cars CRUD",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -194,6 +237,41 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Car"
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cars/update/:id": {
+            "put": {
+                "description": "Update car by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Cars CRUD",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Message"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "401": {
@@ -577,25 +655,17 @@ const docTemplate = `{
                 "brand": {
                     "type": "string"
                 },
-                "comment": {
+                "car_model": {
                     "type": "string"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "engineID": {
-                    "type": "integer"
-                },
-                "id": {
+                "engine_id": {
                     "type": "integer"
                 },
                 "kilometers": {
+                    "description": "Photos       pq.StringArray ` + "`" + `gorm:\"default:null\" sql:\",array\"` + "`" + `",
                     "type": "integer"
                 },
-                "model": {
+                "owner_comment": {
                     "type": "string"
                 },
                 "owner_id": {
@@ -604,6 +674,9 @@ const docTemplate = `{
                 "owners_number": {
                     "type": "integer"
                 },
+                "photos": {
+                    "type": "string"
+                },
                 "placement": {
                     "type": "string"
                 },
@@ -611,9 +684,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 },
                 "vin_code": {

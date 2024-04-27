@@ -11,31 +11,26 @@ definitions:
     properties:
       brand:
         type: string
-      comment:
+      car_model:
         type: string
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      engineID:
-        type: integer
-      id:
+      engine_id:
         type: integer
       kilometers:
+        description: Photos       pq.StringArray `gorm:"default:null" sql:",array"`
         type: integer
-      model:
+      owner_comment:
         type: string
       owner_id:
         type: integer
       owners_number:
         type: integer
+      photos:
+        type: string
       placement:
         type: string
       price:
         type: integer
       status:
-        type: string
-      updatedAt:
         type: string
       vin_code:
         type: string
@@ -235,21 +230,25 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/models.Error'
-      summary: Cars
+      summary: Cars CRUD
       tags:
       - Cars
   /cars/create:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Create a car for sale
       parameters:
       - description: Car
-        in: body
-        name: request
+        in: formData
+        name: data
         required: true
-        schema:
-          $ref: '#/definitions/models.Car'
+        type: object
+      - description: Photos
+        in: formData
+        name: upload[]
+        required: true
+        type: array
       produces:
       - application/json
       responses:
@@ -265,7 +264,32 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.Error'
-      summary: Cars
+      summary: Cars CRUD
+      tags:
+      - Cars
+  /cars/delete/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete car by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Message'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Cars CRUD
       tags:
       - Cars
   /cars/my:
@@ -286,7 +310,30 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.Error'
-      summary: Cars
+      summary: Cars CRUD
+      tags:
+      - Cars
+  /cars/update/:id:
+    put:
+      description: Update car by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Message'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Cars CRUD
       tags:
       - Cars
   /engine:
