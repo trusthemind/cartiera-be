@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -50,5 +51,21 @@ func UploadAvatar(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
+	form, _ := c.MultipartForm()
+	files := form.File["upload[]"]
+
+	if len(files) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No uploaded files provided"})
+		return
+	}
+
+	result, ok, err := helpers.SavePhotoToTable(c, files)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": result, "type": reflect.TypeOf(result).String()})
+
 	c.JSON(http.StatusOK, gin.H{"message": "Middleware is passed"})
 }

@@ -82,7 +82,7 @@ func main() {
 		payment_intent.POST("/cancel", middleware.RequireAuth, controllers.CanceledPaymentIntent)
 	}
 	// !TEST
-	router.GET("/auth/validate", middleware.RequireAuth, controllers.Validate)
+	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
 	// router.POST("/posts/create", middleware.RequireAuth, controllers.CreatePost)
 
