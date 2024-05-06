@@ -32,10 +32,15 @@ func main() {
 	router := gin.Default()
 	router.Static("/uploads", "/uploads")
 	router.MaxMultipartMemory = 8 << 20
-	
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
-	router.Use(cors.New(corsConfig))
+
+	corsConfig := cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app/"},
+		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
+		AllowHeaders:     []string{"Origin", "Content-type", "Authorization"},
+		AllowCredentials: true,
+	})
+
+	router.Use(corsConfig)
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
