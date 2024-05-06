@@ -13,11 +13,11 @@ import (
 var DB *gorm.DB
 
 func ConnectToDB() {
-	os.Setenv("PGHOST", "preferably-pretty-crayfish-iad.a1.pgedge.io")
-	os.Setenv("PGUSER", "admin")
-	os.Setenv("PGDATABASE", "cars_app_db")
-	os.Setenv("PGSSLMODE", "require")
-	os.Setenv("PGPASSWORD", "yvQRA68w032H2k4V07l4vPET")
+	os.Setenv("PGHOST", "rarely-precise-hen-iad.a1.pgedge.io")
+    os.Setenv("PGUSER", "admin")
+    os.Setenv("PGDATABASE", "cartiera_sales_db")
+    os.Setenv("PGSSLMODE", "require")
+    os.Setenv("PGPASSWORD", "424I4gTKsaE2np305KHx2U6H")
 
 	db, err := gorm.Open(postgres.New(postgres.Config{
 	    DSN: fmt.Sprintf("host=%s user=%s dbname=%s sslmode=%s password=%s",
