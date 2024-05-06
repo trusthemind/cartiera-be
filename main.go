@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -31,6 +32,10 @@ func main() {
 	router := gin.Default()
 	router.Static("/uploads", "/uploads")
 	router.MaxMultipartMemory = 8 << 20
+	
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
+	router.Use(cors.New(corsConfig))
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
