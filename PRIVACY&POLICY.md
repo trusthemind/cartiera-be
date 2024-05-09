@@ -1,28 +1,28 @@
 Introduction
 
-Welcome to SCars Ltd’s(SCars, “we”, “us”, “our”) privacy policy.
+Welcome to Cartiera Ltd’s(Cartiera, “we”, “us”, “our”) privacy policy.
 
 We take your privacy very seriously. Please read this privacy policy carefully as it contains important information about who we are and how and why we collect, store, use and share your personal data when we provide our rent payment services (the Services) to you as a tenant, or where you browse or use our website (website user). It also explains your rights in relation to your personal data and how to contact us or supervisory authorities in the event you have a complaint.
 
 Controller
 
-SCars is the data controller and is responsible for certain personal data about you that we collect and use to supply you with our Services as a tenant, or to make a payment to you as representative of a landlord/agency (i.e. a business customer) or where you use or browse our website.
+Cartiera is the data controller and is responsible for certain personal data about you that we collect and use to supply you with our Services as a tenant, or to make a payment to you as representative of a landlord/agency (i.e. a business customer) or where you use or browse our website.
 
 Contact us
 
 If you have any questions about this policy or about how we handle your data, please contact our data privacy team as follows:
 
-Email: Support@scars-support@gmail.com
+Email: Support@cartiera-support@gmail.com
 
 Address: Ukraine, Zhytomyr, Tripilska st. 10, 10003 
 
-You have the right to make a complaint at any time to the Information Commissioner's Office (ICO), the UK regulator for data protection issues (www.ico.org.uk). We would, however, appreciate the chance to deal with your concerns before you approach the ICO so please contact us in the first instance.
+You have the right to make a complaint at any time to the Information Commissioner's Office (ICO), the Ukraine regulator for data protection issues (www.ico.org.com). We would, however, appreciate the chance to deal with your concerns before you approach the ICO so please contact us in the first instance.
 
 It is important that the personal data we hold about you is accurate and current. Please keep us informed if your personal data changes during your relationship with us.
 
 Changes to the privacy policy and your duty to inform us of changes.
 
-We keep our privacy policy under regular review. This version was last updated on April 5th 2024.
+We keep our privacy policy under regular review. This version was last updated on May 9th 2024.
 
 It is important that the personal data we hold about you is accurate and current. Please keep us informed if your personal data changes during your relationship with us.
 
@@ -40,26 +40,24 @@ Personal data, or personal information, means any information about an individua
 We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:
 
 Tenants or prospective tenants
-
+Vehicle or item details
 
 Identity Data: includes name, username or similar identifier, marital status, title, date of birth.
-Biometric Data: includes self-portrait photograph
 Contact Data: includes email address and telephone number, address and billing address.
-KYC Data:includes proof of address, proof of identity, passport, photographic image, nationality, salary.
+Profile Data: includes your username and password, feedback, your contact history, purchase history,trade history.
+Transaction Data: includes details about payments from or to you.
 Marketing Data: includes your preferences in receiving marketing communications from us or third parties.
-Profile Data: includes your username and password, feedback, your contact history, purchase history.
-Tenancy Data:rental agreement.
-Transaction Data: includes details about payments from you.
 Usage Data:information about how you use our website, IT, communication and other systems.
-Technical Data:includes your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, the device type, operating system, unique device identifiers, device settings, and geo-location data
-Representatives of landlords or agents (operating as businesses)
-
-Identity Data: includes name.
-Contact Data: includes company email address and telephone number job title and company details.
-Marketing Data: includes your preferences in receiving marketing communications from us or third parties.
-Property Data: includes information regarding the properties that you own or manage, including address.
 Financial Data:bank account details.
-Transaction Data:includes details about payments to you.
+Technical Data:includes your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, the device type, operating system, unique device identifiers, device settings, and geo-location data
+Representatives of transfer agent (operating as businesses)
+
+Identity Data: includes name , username or similar identifier, marital status, title, date of birth.
+Biometric Data: includes self-portrait photograph
+KYC Data:includes proof of address, proof of identity, passport, photographic image, nationality.
+Contact Data: includes company email address and telephone number job title and company details.
+Property Data: includes information regarding the properties that you own or manage, including address.
+Transaction Data: includes details about payments from or to you.
 Usage Data:includes information about how you use our website, and our Services.
 Technical Data:includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform, and other technology on the devices you use to access this website.
 Website users
@@ -88,10 +86,8 @@ Third parties. We will receive personal data about you from various third partie
 analytics providers such as Google;
 providers of technical, payment and delivery services such as Stripe.
 Providers of services such as KYC outsourced services and soft credit check facilities;
-Companies house;
-In the case of representatives of landlords/agents we may also receive information from tenants or prospective tenants.
 How we use your personal data
-We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
+We will only use your personal data when the law allows us to or users. Most commonly, we will use your personal data in the following circumstances:
 
 Where we need to perform the contract we are about to enter into or have entered into with you.
 Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.
@@ -111,22 +107,20 @@ Biometric
 KYC
 Tenancy
 Technical
+Vehicle information
 Performance of a contract with you
 Consent
 Compliance with a legal obligation
-To process and deliver your request for our Services as a tenant including:
-Manage payments, fees and charges
-Collect and recover money owed to us and to any third parties
-issuing a reminder that rent is due.
 Identity
 Contact
 Tenancy
 Transaction
+Vehicle Trading
+Sale possibility
 Marketing Communications
 Performance of a contract with you
-Necessary for our legitimate interests (to recover debts due to us)
 Consent
-To manage our relationship with you (tenants) or your organisation (landlords/agencies) which will include:
+To manage our relationship with you (tenants) which will include:
 Notifying you about changes to our terms or privacy policy
 Asking you to leave a review or take a survey
 Identity
@@ -135,27 +129,15 @@ Profile
 Marketing and Communications
 Performance of a contract with you
 Necessary to comply with a legal obligation
-Necessary for our legitimate interests (to keep our records updated and to study how customers use our Services)
 Consent
-To administer and protect our business and this website (including troubleshooting, data analysis, testing, system maintenance, support, reporting and hosting of data)	
 Identity
 Contact
 Technical
-Necessary for our legitimate interests (for running our business, provision of administration and IT services, network security, to prevent fraud and in the context of a business reorganisation or group restructuring exercise)
-Necessary to comply with a legal obligation
-To deliver relevant website content and advertisements to you and measure or understand the effectiveness of the advertising we serve to you which includes ‘profiling’ to evaluate certain characteristics about you (nb this does not produce any legal effects or similarly significant effects).	
-Identity
-Contact
-Profile
-Usage
 Marketing and Communications
 Technical
-Necessary for our legitimate interests (to study how customers use our Services, to develop them, to grow our business and to inform our marketing strategy)
-Consent.
 To use data analytics to improve our website, Services, marketing, customer relationships and experiences	
 Technical
 Usage
-Necessary for our legitimate interests (to define types of customers for our Services, to keep our website updated and relevant, to develop our business and to inform our marketing strategy)
 To make suggestions and recommendations to you about Services that may be of interest to you	
 Identity
 Contact
@@ -163,13 +145,10 @@ Technical
 Usage
 Profile
 Marketing and Communications
-Necessary for our legitimate interests (to develop our Services and grow our business)
 Consent
 Marketing
 
 We strive to provide you with choices regarding certain personal data uses, particularly around marketing and advertising.
-
-We may use your Identity, Contact, Technical, Usage, and Profile Data to form a view on what we think you may want or need, or what may be of interest to you. This is how we decide which Services and offers may be relevant for you (we call this marketing).
 
 If you are an individual tenant, you may receive marketing communications from us if you have consented for us to send you this information or if you have requested information from us or purchased Services from us and you have not opted out of receiving that marketing.
 
@@ -204,13 +183,13 @@ Third parties to whom we may choose to sell, transfer or merge parts of our busi
 We require all third parties to respect the security of your personal data and to treat it in accordance with the law. We do not allow our third-party service providers to use your personal data for their own purposes and only permit them to process your personal data for specified purposes and in accordance with our instructions.
 
 International transfers
-We may share your personal data with external third parties based outside the UK.
+We may share your personal data with external third parties based outside the Ukraine.
 
-Whenever we transfer your personal data out of the UK, we ensure a similar degree of protection is afforded to it by ensuring at least one of the following safeguards is implemented:
+Whenever we transfer your personal data out of the Ukraine, we ensure a similar degree of protection is afforded to it by ensuring at least one of the following safeguards is implemented:
 
 We will only transfer your personal data to countries that have been deemed to provide an adequate level of protection for personal data; or
-Where we use certain service providers, we may use specific contracts approved for use in the UK which give personal data the same protection it has in the UK.
-Please contact us if you want further information on the specific mechanism used by us when transferring your personal data out of the UK.
+Where we use certain service providers, we may use specific contracts approved for use in the Ukraine which give personal data the same protection it has in the Ukraine.
+Please contact us if you want further information on the specific mechanism used by us when transferring your personal data out of the Ukraine.
 
 Data security
 We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorised way, altered or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know. They will only process your personal data on our instructions and they are subject to a duty of confidentiality.
