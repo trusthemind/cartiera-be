@@ -6,10 +6,9 @@ type User struct {
 	gorm.Model
 	Name       string `json:"name" gorm:"not null"`
 	Email      string `json:"email" gorm:"not null;unique"`
-	Password   string `json:"password" gorm:"not null"`
+	Password   string `json:"-" gorm:"not null"`
 	Avatar     string `json:"avatar" gorm:"not null"`
 	CustomerID string `json:"customer_id" gorm:"not null;unique"`
-	IsAdmin    bool   `json:"is_admin" default:"false"`
 	// Liked    []Car
 }
 
