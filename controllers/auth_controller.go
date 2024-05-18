@@ -104,10 +104,9 @@ func Login(c *gin.Context) {
 
 	// create a token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":   user.ID,
-		"name":  user.Name,
-		"admin": user.IsAdmin,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(), //24 hours expire
+		"sub":  user.ID,
+		"name": user.Name,
+		"exp":  time.Now().Add(time.Hour * 24).Unix(), //24 hours expire
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
@@ -119,7 +118,7 @@ func Login(c *gin.Context) {
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("Authorization", tokenString, 3600*24, "", "", true, true)
 
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, token)
 }
 
 func Logout(c *gin.Context) {
@@ -130,7 +129,7 @@ func Logout(c *gin.Context) {
 		return
 	}
 	if token != nil {
-		c.SetCookie("Authorization", "", -1, "", "", false, true)
+		c.SetCookie("Authorization", "", time.Now().Hour()-1, "", "", false, true)
 
 		c.JSON(http.StatusOK, gin.H{"message": "Logged out"})
 	}

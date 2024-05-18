@@ -1,6 +1,6 @@
 # Cars Sales App Back-end
 
-This application is created for sale Cars, make trades more comfortable for customers.
+This application is created for Cartiera app, make market operations and car trades more comfortable for customers.
 ---
 ### Install all dev dependencies
 ```bash
