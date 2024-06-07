@@ -7,6 +7,22 @@ definitions:
         description: Valid is true if Time is not NULL
         type: boolean
     type: object
+  models.AdminRequestRegistration:
+    properties:
+      email:
+        type: string
+      is_customer:
+        type: boolean
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - is_customer
+    - name
+    - password
+    type: object
   models.Car:
     properties:
       brand:
@@ -125,6 +141,27 @@ definitions:
     - name
     - password
     type: object
+  models.User:
+    properties:
+      avatar:
+        type: string
+      createdAt:
+        type: string
+      customer_id:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      is_admin:
+        type: boolean
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   models.VINRequest:
     properties:
       vin_code:
@@ -160,6 +197,86 @@ info:
   title: Cars Sales App API
   version: "0.6"
 paths:
+  /admin/new-user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.AdminRequestRegistration'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Create a new user with admin account
+      tags:
+      - Administration
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Users Administration
+      tags:
+      - Administration
+  /admin/users/delete/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete User by ID
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Users Administration
+      tags:
+      - Administration
+  /admin/users/update/:id:
+    put:
+      consumes:
+      - application/json
+      description: Update User by ID
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Users Administration
+      tags:
+      - Administration
   /auth/login:
     post:
       consumes:

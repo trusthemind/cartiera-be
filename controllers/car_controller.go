@@ -13,17 +13,17 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags			Cars
-// @Summary		Cars CRUD
-// @Description	Create a car for sale
-// @Accept		multipart/form-data
-// @Produce		json
-// @Param		data formData object true "Car"
-// @Param		upload[] formData array true "Photos"
-// @Success		200		{object}	models.Message
-// @Failure		400		{object}	models.Error
-// @Failure		401		{object}	models.Error
-// @Router			/cars/create [post]
+//	@Tags			Cars
+//	@Summary		Cars CRUD
+//	@Description	Create a car for sale
+//	@Accept			multipart/form-data
+//	@Produce		json
+//	@Param			data		formData	object	true	"Car"
+//	@Param			upload[]	formData	array	true	"Photos"
+//	@Success		200			{object}	models.Message
+//	@Failure		400			{object}	models.Error
+//	@Failure		401			{object}	models.Error
+//	@Router			/cars/create [post]
 func CreateCar(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["upload[]"]
@@ -93,14 +93,14 @@ func CreateCar(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been created successfully"})
 }
 
-// @Tags			Cars
-// @Summary		Cars CRUD
-// @Description	Get all cars
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	[]models.Car
-// @Failure		400	{object}	models.Error
-// @Router			/cars/all [get]
+//	@Tags			Cars
+//	@Summary		Cars CRUD
+//	@Description	Get all cars
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]models.Car
+//	@Failure		400	{object}	models.Error
+//	@Router			/cars/all [get]
 func GetAllCars(c *gin.Context) {
 	var cars []models.Car
 	result := initializers.DB.Find(&cars)
@@ -112,14 +112,14 @@ func GetAllCars(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": cars})
 }
 
-// @Tags			Cars
-// @Summary		Cars CRUD
-// @Description	Get owned Cars
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	[]models.Car
-// @Failure		401	{object}	models.Error
-// @Router			/cars/my [get]
+//	@Tags			Cars
+//	@Summary		Cars CRUD
+//	@Description	Get owned Cars
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]models.Car
+//	@Failure		401	{object}	models.Error
+//	@Router			/cars/my [get]
 func GetOwnedCars(c *gin.Context) {
 	var cars []models.Car
 
@@ -146,16 +146,16 @@ func GetOwnedCars(c *gin.Context) {
 	c.JSON(http.StatusOK, cars)
 }
 
-// @Tags			Cars
-// @Summary		Cars CRUD
-// @Description	Delete car by ID
-// @Accept			json
-// @Produce		json
-// @Params			car_id path string "Car ID"
-// @Success		200	{object}	[]models.Message
-// @Failure		400	{object}	models.Error
-// @Failure		401	{object}	models.Error
-// @Router			/cars/delete/:id [delete]
+//	@Tags			Cars
+//	@Summary		Cars CRUD
+//	@Description	Delete car by ID
+//	@Accept			json
+//	@Produce		json
+//	@Params			car_id path string "Car ID"
+//	@Success		200	{object}	[]models.Message
+//	@Failure		400	{object}	models.Error
+//	@Failure		401	{object}	models.Error
+//	@Router			/cars/delete/:id [delete]
 func DeleteCarByID(c *gin.Context) {
 	var car models.Car
 	carID := c.Param("id")
@@ -191,15 +191,15 @@ func DeleteCarByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully deleted"})
 }
 
-// @Tags			Cars
-// @Summary		Cars CRUD
-// @Description	Update car by ID
-// @Produce		json
-// @Params			car_id path string "Car ID"
-// @Success		200	{object}	[]models.Message
-// @Failure		400	{object}	models.Error
-// @Failure		401	{object}	models.Error
-// @Router			/cars/update/:id [put]
+//	@Tags			Cars
+//	@Summary		Cars CRUD
+//	@Description	Update car by ID
+//	@Produce		json
+//	@Params			car_id path string "Car ID"
+//	@Success		200	{object}	[]models.Message
+//	@Failure		400	{object}	models.Error
+//	@Failure		401	{object}	models.Error
+//	@Router			/cars/update/:id [put]
 func UpdateCarByID(c *gin.Context) {
 	var requestBody map[string]interface{}
 	if err := c.BindJSON(&requestBody); err != nil {
