@@ -15,14 +15,14 @@ import (
 	"github.com/trusthemind/go-cars-app/models"
 )
 
-// @Tags		 Administration
-// @Summary		Users Administration
-// @Description	Get all users
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	[]models.User
-// @Failure		400	{object}	models.Error
-// @Router			/admin/users [get]
+//	@Tags			Administration
+//	@Summary		Users Administration
+//	@Description	Get all users
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]models.User
+//	@Failure		400	{object}	models.Error
+//	@Router			/admin/users [get]
 func GetAllUsers(c *gin.Context) {
 	var users []models.User
 	result := initializers.DB.Find(&users)
@@ -34,14 +34,14 @@ func GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
-// @Tags		 Administration
-// @Summary		Users Administration
-// @Description	Delete User by ID
-// @Accept			json
-// @Params			user_id path string "User ID"
-// @Success		200	{object}	models.Message
-// @Failure		400	{object}	models.Error
-// @Router			/admin/users/delete/:id [delete]
+//	@Tags			Administration
+//	@Summary		Users Administration
+//	@Description	Delete User by ID
+//	@Accept			json
+//	@Params			user_id path string "User ID"
+//	@Success		200	{object}	models.Message
+//	@Failure		400	{object}	models.Error
+//	@Router			/admin/users/delete/:id [delete]
 func DeleteUserbyID(c *gin.Context) {
 	var userID = c.Param("id")
 	var user models.User
@@ -54,14 +54,14 @@ func DeleteUserbyID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User with ID " + userID + " was successfully deleted"})
 }
 
-// @Tags		 Administration
-// @Summary		Users Administration
-// @Description	Update User by ID
-// @Accept			json
-// @Params			user_id path string "User ID"
-// @Success		200	{object}	models.Message
-// @Failure		400	{object}	models.Error
-// @Router			/admin/users/update/:id [put]
+//	@Tags			Administration
+//	@Summary		Users Administration
+//	@Description	Update User by ID
+//	@Accept			json
+//	@Params			user_id path string "User ID"
+//	@Success		200	{object}	models.Message
+//	@Failure		400	{object}	models.Error
+//	@Router			/admin/users/update/:id [put]
 func UpdateUserByID(c *gin.Context) {
 	var requestBody map[string]interface{}
 	if err := c.BindJSON(&requestBody); err != nil {
@@ -89,15 +89,15 @@ func UpdateUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User has been successfully updated"})
 }
 
-// @Tags			Administration
-// @Summary		Create a new user with admin account
-// @Description
-// @Accept			json
-// @Produce		json
-// @Param			request	body		models.AdminRequestRegistration	true	"User Data"
-// @Success		200		{object}	models.Message
-// @Failure		400		{object}	models.Error
-// @Router			/admin/new-user [post]
+//	@Tags		Administration
+//	@Summary	Create a new user with admin account
+//	@Description
+//	@Accept		json
+//	@Produce	json
+//	@Param		request	body		models.AdminRequestRegistration	true	"User Data"
+//	@Success	200		{object}	models.Message
+//	@Failure	400		{object}	models.Error
+//	@Router		/admin/new-user [post]
 func CreateNewUser(c *gin.Context) {
 	var requestBody models.AdminRequestRegistration
 
