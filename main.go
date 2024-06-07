@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
 	"github.com/trusthemind/go-cars-app/controllers"
 	admin_controllers "github.com/trusthemind/go-cars-app/controllers/admin"
 	_ "github.com/trusthemind/go-cars-app/docs"
@@ -37,7 +36,7 @@ func main() {
 	corsConfig := cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app/"},
 		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
-		AllowHeaders:     []string{"Origin", "Content-type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Cookie"},
 		AllowCredentials: true,
 	})
 
