@@ -31,10 +31,8 @@ func CreateCar(c *gin.Context) {
 	data := c.Request.FormValue("data")
 
 	var RequestData models.Car
-	json.Unmarshal([]byte(data), &RequestData)
-
-	if c.Bind(&RequestData) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+	if err := json.Unmarshal([]byte(data), &RequestData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse JSON data", "message": err.Error()})
 		return
 	}
 
