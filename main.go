@@ -36,11 +36,10 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 
 	corsConfig := cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"*"},
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app/"},
+		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Cookie"},
+		ExposedHeaders:   []string{"Referrer-Policy"},
 		AllowCredentials: true,
 	})
 
