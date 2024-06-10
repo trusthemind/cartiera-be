@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -36,10 +38,14 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 
 	corsConfig := cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app/"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app", },
 		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Cookie"},
 		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "http://localhost:3000" || strings.HasPrefix(origin, "http://localhost:3000/")
+		},
+		
 	})
 
 	router.Use(corsConfig)
