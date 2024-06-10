@@ -4,21 +4,24 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
 )
 
 func RequireAuth(c *gin.Context) {
-	tokenString, err := c.Cookie("Authorization")
-
-	if err != nil {
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
+
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

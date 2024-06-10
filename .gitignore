@@ -12,5 +12,6 @@ go-cars-app
 *.exe~
 
 #ENVs
-.env
+
+#.env
 *.txt
