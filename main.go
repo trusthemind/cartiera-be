@@ -37,6 +37,7 @@ func main() {
 		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app/"},
 		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Cookie"},
+		ExposedHeaders:   []string{"Referrer-Policy"},
 		AllowCredentials: true,
 	})
 
