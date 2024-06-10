@@ -5,9 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/trusthemind/go-cars-app/controllers"
 	admin_controllers "github.com/trusthemind/go-cars-app/controllers/admin"
 	_ "github.com/trusthemind/go-cars-app/docs"
+	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/middleware"
 )
@@ -99,7 +101,7 @@ func main() {
 		admin.POST("/new-user", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.CreateNewUser)
 		admin.DELETE("/delete/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.DeleteUserbyID)
 	}
-
+	router.GET("photos/:photoName", helpers.GetPhoto)
 	// !TEST
 	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)
