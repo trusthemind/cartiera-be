@@ -1,16 +1,18 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
 	"github.com/trusthemind/go-cars-app/helpers"
+	"github.com/trusthemind/go-cars-app/initializers"
+	"github.com/trusthemind/go-cars-app/models"
 )
 
 func UploadAvatar(c *gin.Context) {
@@ -26,14 +28,16 @@ func UploadAvatar(c *gin.Context) {
 		return
 	}
 
-	token, err := c.Request.Cookie("Authorization")
-	if err != nil {
-		log.Print(err)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
 		return
 	}
 
-	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+
+	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
@@ -48,6 +52,30 @@ func UploadAvatar(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Avatar is updated successfully"})
+}
+
+func GetUserInfo(c *gin.Context) {
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
+		return
+	}
+
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
+	}
+
+	var id = claims["sub"].(float64)
+
+	var user models.User
+	initializers.DB.First(&user, "ID = ?", id)
+
+	c.JSON(http.StatusOK, user)
 }
 
 func Validate(c *gin.Context) {

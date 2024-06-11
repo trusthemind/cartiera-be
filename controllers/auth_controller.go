@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
-	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
 
@@ -69,30 +67,6 @@ func Register(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-func GetUserInfo(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
-		return
-	}
-
-	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-
-	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
-
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
-		return
-	}
-
-	var id = claims["sub"].(float64)
-
-	var user models.User
-	initializers.DB.First(&user, "ID = ?", id)
-
-	c.JSON(http.StatusOK, user)
 }
 
 // @Tags			Authorization

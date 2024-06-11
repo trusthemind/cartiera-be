@@ -54,7 +54,6 @@ func main() {
 	// *AUTH
 	auth := router.Group("/auth")
 	{
-		auth.GET("/info", controllers.GetUserInfo)
 		auth.POST("/registration", controllers.Register)
 		auth.POST("/login", controllers.Login)
 		auth.POST("/logout", controllers.Logout)
@@ -64,6 +63,7 @@ func main() {
 	users := router.Group("/users")
 	{
 		users.PUT("/avatar/update", middleware.RequireAuth, controllers.UploadAvatar)
+		auth.GET("/info", controllers.GetUserInfo)
 	}
 
 	// *ENGINE
