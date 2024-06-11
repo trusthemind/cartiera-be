@@ -127,19 +127,21 @@ func GetOwnedCars(c *gin.Context) {
 	var cars []models.Car
 
 	var err error
-	token, err := c.Request.Cookie("Authorization")
-	if err != nil {
-		log.Print(err)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
 		return
 	}
 
-	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	// Remove the "Bearer " prefix from the header value
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+		return
 	}
-
 	var id = claims["sub"].(float64)
 
 	log.Print(id)
@@ -163,16 +165,18 @@ func DeleteCarByID(c *gin.Context) {
 	var car models.Car
 	carID := c.Param("id")
 
-	token, err := c.Request.Cookie("Authorization")
-	if err != nil {
-		log.Print(err)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
 		return
 	}
 
-	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
+
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
 		return
 	}
 
@@ -213,17 +217,21 @@ func UpdateCarByID(c *gin.Context) {
 	carID := c.Param("id")
 	car := models.Car{}
 
-	token, err := c.Request.Cookie("Authorization")
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header not found"})
+		return
+	}
+
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
+
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
 		return
 	}
 
-	claims, err := helpers.ExtractClaims(token.Value, []byte(os.Getenv("SECRET_KEY")))
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
-	}
 
 	userID, ok := claims["sub"].(float64)
 	if !ok {
