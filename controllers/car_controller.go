@@ -12,6 +12,7 @@ import (
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
+
 )
 
 // @Tags			Cars
@@ -88,7 +89,7 @@ func CreateCar(c *gin.Context) {
 	create_result := initializers.DB.Create(&car)
 
 	if create_result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create car", "Asd": create_result.Error.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create car"})
 		return
 	}
 
