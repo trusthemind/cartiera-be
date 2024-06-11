@@ -148,7 +148,7 @@ func GetOwnedCars(c *gin.Context) {
 	result := initializers.DB.Where("owner_id = ?", id).Find(&cars)
 	log.Print(result)
 
-	c.JSON(http.StatusOK, cars)
+	c.JSON(http.StatusOK, gin.H{"data":cars})
 }
 
 // @Tags			Cars
