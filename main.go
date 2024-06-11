@@ -63,7 +63,7 @@ func main() {
 	users := router.Group("/users")
 	{
 		users.PUT("/avatar/update", middleware.RequireAuth, controllers.UploadAvatar)
-		auth.GET("/info", controllers.GetUserInfo)
+		users.GET("/info", controllers.GetUserInfo)
 	}
 
 	// *ENGINE
