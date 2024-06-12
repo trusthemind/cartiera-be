@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/trusthemind/go-cars-app/controllers"
 	admin_controllers "github.com/trusthemind/go-cars-app/controllers/admin"
 	_ "github.com/trusthemind/go-cars-app/docs"
@@ -101,8 +102,8 @@ func main() {
 
 	admin := router.Group("/admin")
 	{
-		admin.GET("/users", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.GetAllUsers)
-		admin.PUT("/users/update/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.UpdateUserByID)
+		admin.GET("/users", middleware.RequireAuth, admin_controllers.GetAllUsers)
+		admin.PUT("/users/update/:id", middleware.RequireAuth, admin_controllers.UpdateUserByID)
 		admin.POST("/new-user", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.CreateNewUser)
 		admin.DELETE("/delete/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.DeleteUserbyID)
 	}
