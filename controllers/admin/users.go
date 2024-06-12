@@ -77,7 +77,7 @@ func UpdateUserByID(c *gin.Context) {
 		dbFields[key] = value
 	}
 
-	result := initializers.DB.Model(&user).Where("owner_id = ?", userID).Updates(dbFields)
+	result := initializers.DB.Model(&user).Where("ID = ?", userID).Updates(dbFields)
 	if result.RowsAffected == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "This user is not found"})
 		return

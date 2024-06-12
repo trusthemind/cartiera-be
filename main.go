@@ -102,8 +102,8 @@ func main() {
 
 	admin := router.Group("/admin")
 	{
-		admin.GET("/users", middleware.RequireAuth, admin_controllers.GetAllUsers)
-		admin.PUT("/users/update/:id", middleware.RequireAuth, admin_controllers.UpdateUserByID)
+		admin.GET("/users", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.GetAllUsers)
+		admin.PUT("/users/update/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.UpdateUserByID)
 		admin.POST("/new-user", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.CreateNewUser)
 		admin.DELETE("/delete/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.DeleteUserbyID)
 	}
