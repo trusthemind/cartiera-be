@@ -122,7 +122,7 @@ func UpdateEngineInfo(c *gin.Context) {
 
 	dbFields := map[string]interface{}{}
 	for key, value := range RequestBody {
-		if key != "name" {
+		if key != "brand" {
 			dbFields[key] = value
 		}
 	}

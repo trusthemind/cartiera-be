@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
@@ -105,14 +106,20 @@ func CreateCar(c *gin.Context) {
 // @Failure		400	{object}	models.Error
 // @Router			/cars/all [get]
 func GetAllCars(c *gin.Context) {
+	brand := c.Query("brand")
 	var cars []models.Car
-	result := initializers.DB.Find(&cars)
+	var result *gorm.DB
+	if brand != "" {
+		result = initializers.DB.Where("Brand = ?", brand).Find(&cars)
+	} else {
+		result = initializers.DB.Find(&cars)
+	}
 
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get cars"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": cars})
+	c.JSON(http.StatusOK, gin.H{"data": cars, "count": len(cars)})
 }
 
 // @Tags			Cars
@@ -148,7 +155,7 @@ func GetOwnedCars(c *gin.Context) {
 	result := initializers.DB.Where("owner_id = ?", id).Find(&cars)
 	log.Print(result)
 
-	c.JSON(http.StatusOK, gin.H{"data":cars})
+	c.JSON(http.StatusOK, gin.H{"data": cars})
 }
 
 // @Tags			Cars
@@ -231,7 +238,6 @@ func UpdateCarByID(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Failed to get credentials"})
 		return
 	}
-
 
 	userID, ok := claims["sub"].(float64)
 	if !ok {
