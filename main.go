@@ -38,7 +38,7 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 
 	corsConfig := cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://car-sales-app-v2.up.railway.app"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://cartiera.vercel.app", "https://car-sales-app-v2.up.railway.app/"},
 		AllowMethods:     []string{"PUT", "POST", "DELETE", "GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Cookie"},
 		AllowCredentials: true,
@@ -63,7 +63,7 @@ func main() {
 	users := router.Group("/users")
 	{
 		users.PUT("/avatar/update", middleware.RequireAuth, controllers.UploadAvatar)
-		auth.GET("/info", controllers.GetUserInfo)
+		users.GET("/info", controllers.GetUserInfo)
 	}
 
 	// *ENGINE
@@ -82,6 +82,7 @@ func main() {
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
 		cars.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateCarByID)
+		cars.GET("/:id", controllers.GetCarByID)
 		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 
@@ -107,7 +108,7 @@ func main() {
 		admin.POST("/new-user", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.CreateNewUser)
 		admin.DELETE("/delete/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.DeleteUserbyID)
 	}
-	router.GET("photos/:photoName", helpers.GetPhoto)
+	router.GET("/photos/:photoName", helpers.GetPhoto)
 	// !TEST
 	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)

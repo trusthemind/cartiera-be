@@ -35,7 +35,7 @@ func SavePhotoToTable(ctx *gin.Context, files []*multipart.FileHeader) (result s
 		if err := ctx.SaveUploadedFile(file, "uploads/"+fileName); err != nil {
 			return "", false, err
 		} else {
-			urlArr = append(urlArr, fileName)
+			urlArr = append(urlArr, "photos/"+fileName)
 		}
 	}
 
