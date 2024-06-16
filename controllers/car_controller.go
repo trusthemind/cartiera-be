@@ -13,7 +13,6 @@ import (
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
-
 )
 
 // @Tags			Cars
@@ -262,4 +261,40 @@ func UpdateCarByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Car has been successfully updated"})
+}
+
+// @Tags			Cars
+// @Summary		Cars CRUD
+// @Description	Get Car info by ID
+// @Produce		json
+// @Params			car_id path string "Car ID"
+// @Success		200	{object}	{models.Car models.Engine}
+// @Failure		404	{object}	models.Error
+// @Router			/cars/:id [GET]
+func GetCarByID(c *gin.Context) {
+	carID := c.Param("id")
+	var car models.Car
+	var engine models.Engine
+
+	result := initializers.DB.First(&car, "ID = ?", carID)
+
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Car not found"})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	engine_result := initializers.DB.Find(&engine, "ID = ?", car.EngineID)
+
+	if engine_result.RowsAffected == 0 {
+		c.JSON(http.StatusOK, gin.H{"data": car})
+		return
+	} else if engine_result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": engine_result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": car, "engine": engine})
 }

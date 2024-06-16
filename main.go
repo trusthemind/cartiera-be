@@ -82,6 +82,7 @@ func main() {
 		cars.POST("/create", middleware.RequireAuth, controllers.CreateCar)
 		cars.GET("/my", middleware.RequireAuth, controllers.GetOwnedCars)
 		cars.PUT("/update/:id", middleware.RequireAuth, controllers.UpdateCarByID)
+		cars.GET("/:id", controllers.GetCarByID)
 		cars.DELETE("/delete/:id", middleware.RequireAuth, controllers.DeleteCarByID)
 	}
 
@@ -107,7 +108,7 @@ func main() {
 		admin.POST("/new-user", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.CreateNewUser)
 		admin.DELETE("/delete/:id", middleware.RequireAdmin, middleware.RequireAuth, admin_controllers.DeleteUserbyID)
 	}
-	router.GET("photos/:photoName", helpers.GetPhoto)
+	router.GET("/photos/:photoName", helpers.GetPhoto)
 	// !TEST
 	router.POST("/auth/validate", middleware.RequireAuth, controllers.Validate)
 	router.POST("/vincode/check", controllers.CheckVin)

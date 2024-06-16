@@ -36,7 +36,6 @@ func UploadAvatar(c *gin.Context) {
 
 	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
 
-
 	claims, err := helpers.ExtractClaims(tokenString, []byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
@@ -45,7 +44,7 @@ func UploadAvatar(c *gin.Context) {
 
 	var id = claims["sub"].(float64)
 
-	avatarPath := "uploads/" + fileName
+	avatarPath := "photos/" + fileName
 	if err := helpers.UpdateAvatar(uint(id), avatarPath); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update avatar path in the database"})
 		return
