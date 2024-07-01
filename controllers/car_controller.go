@@ -13,7 +13,6 @@ import (
 	"github.com/trusthemind/go-cars-app/helpers"
 	"github.com/trusthemind/go-cars-app/initializers"
 	"github.com/trusthemind/go-cars-app/models"
-
 )
 
 // @Tags			Cars
@@ -84,6 +83,7 @@ func CreateCar(c *gin.Context) {
 		VinCode:      RequestData.VinCode,
 		Kilometers:   RequestData.Kilometers,
 		Placement:    RequestData.Placement,
+		CarBase:      RequestData.CarBase,
 		OwnersNumber: RequestData.OwnersNumber,
 		OwnerComment: RequestData.OwnerComment,
 	}

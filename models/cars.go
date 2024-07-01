@@ -6,13 +6,12 @@ import (
 	// "github.com/go-pg/pg"
 	// "github.com/lib/pq"
 	"gorm.io/gorm"
-
 )
 
 type MultiSStrings []string
 
 type Car struct {
-	gorm.Model   
+	gorm.Model
 	OwnerID      int    `json:"owner_id" gorm:"not null"`
 	EngineID     int    `json:"engine_id" gorm:"not null"`
 	OwnerComment string `json:"owner_comment" gorm:"default:null"`
@@ -20,6 +19,7 @@ type Car struct {
 	OwnersNumber int32  `json:"owners_number" gorm:"not null"`
 	Price        int64  `json:"price" gorm:"not null"`
 	Photos       string `gorm:"default:null" gorm:"type:text"`
+	CarBase      string `json:"base"` //Coupe
 	// Photos       pq.StringArray `gorm:"default:null" sql:",array"`
 	Kilometers int64  `json:"kilometers" gorm:"not null"`
 	Brand      string `json:"brand" gorm:"not null"`
@@ -28,7 +28,6 @@ type Car struct {
 	VinCode    string `json:"vin_code" gorm:"not null;unique"`
 	Placement  string `json:"placement" gorm:"not null"`
 }
-
 
 type Engine struct {
 	gorm.Model

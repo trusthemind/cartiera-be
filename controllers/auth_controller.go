@@ -55,10 +55,11 @@ func Register(c *gin.Context) {
 	log.Print(customer.ID)
 
 	user := models.User{
-		CustomerID: customer.ID,
-		Name:       RequestBody.Name,
-		Email:      RequestBody.Email,
-		Password:   string(hash)}
+		CustomerID:  customer.ID,
+		Name:        RequestBody.Name,
+		Email:       RequestBody.Email,
+		PhoneNumber: RequestBody.PhoneNumber,
+		Password:    string(hash)}
 	result := initializers.DB.Create(&user)
 
 	if result.Error != nil {
