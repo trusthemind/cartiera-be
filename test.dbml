@@ -1,0 +1,64 @@
+
+Table cars {
+  id number
+  ownerID number
+  ownercomment string
+  year number
+  ownersnumber number
+  price number
+  engine number [ref:- engines.id]
+  carbase string
+  photos array
+  killometers number
+  brand string
+  status string
+  vin string
+  placement string
+}
+
+table engines {
+  id number
+  brand string 
+  name string
+  fuel string 
+  cilinders number
+  compsumption number
+}
+
+table details {
+  id number
+  price number
+  condition string
+  ownerid number
+}
+
+table paymentintent{
+  uid number
+  stripeid string
+  status string
+  car number [ref: - cars.id]
+  currency string
+  customerid string
+  amount number
+  clientsecret string
+
+}
+
+table users{
+  id  number
+  name string
+  email string
+  password hashstring
+  avatar string
+  customerid string
+  isadmin bool
+  phone string
+  telegram string
+  likeddetais array
+  likedcars array
+  intentshistory array
+}
+
+ref: paymentintent.uid > users.intentshistory
+ref: cars.id > users.likedcars
+ref: details.id > users.likeddetais
