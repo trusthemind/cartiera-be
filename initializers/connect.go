@@ -22,11 +22,6 @@ func ConnectToDB() {
 	}
 
 	DB = db
-
-	var nodeNames []string
-	if err := DB.Raw("SELECT node_name FROM spock.node").Scan(&nodeNames).Error; err != nil {
-		log.Fatalf("Failed to execute query: %v", err)
-	}
 }
 
 func CloseDB() {
