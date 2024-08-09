@@ -275,6 +275,7 @@ func UpdateCarByID(c *gin.Context) {
 func GetCarByID(c *gin.Context) {
 	carID := c.Param("id")
 	var car models.Car
+	var owner models.User
 	var engine models.Engine
 
 	result := initializers.DB.First(&car, "ID = ?", carID)
@@ -287,15 +288,20 @@ func GetCarByID(c *gin.Context) {
 		return
 	}
 
+	owner_result := initializers.DB.First(&owner, "ID = ?", car.OwnerID)
+
 	engine_result := initializers.DB.Find(&engine, "ID = ?", car.EngineID)
 
-	if engine_result.RowsAffected == 0 {
+	if engine_result.RowsAffected == 0 || owner_result.RowsAffected == 0 {
 		c.JSON(http.StatusOK, gin.H{"data": car})
 		return
 	} else if engine_result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": engine_result.Error.Error()})
 		return
+	} else if owner_result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": owner_result.Error.Error()})
+		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": car, "engine": engine})
+	c.JSON(http.StatusOK, gin.H{"data": car, "owner": owner, "engine": engine})
 }
