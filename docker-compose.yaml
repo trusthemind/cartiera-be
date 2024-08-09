@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    image: cartiera-be-go:local
+    container_name: cartiera-app
+    ports:
+      - "${PORT}:3000"  # Map PORT from .env to container port 3000
+    env_file:
+      - .env  # Load environment variables from the .env file
+    environment:
+      # Optionally, you can override or add more environment variables here
+      - PORT=${PORT}
+      - SECRET_KEY=${SECRET_KEY}
+      - NINJA_URL=${NINJA_URL}
+      - NINJA_KEY=${NINJA_KEY}
+      - STRIPE_KEY=${STRIPE_KEY}
+      - PGHOST=${PGHOST}
+      - PGUSER=${PGUSER}
+      - PGDATABASE=${PGDATABASE}
+      - PGSSLMODE=${PGSSLMODE}
+      - PGPASSWORD=${PGPASSWORD}
+    command: ["/app"]  # Command to run the application
+    restart: unless-stopped  # Automatically restart the container unless stopped manually
+    # Optionally add a health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]  # Example health check
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
+# Optionally define networks, volumes, and other services
+# networks:
+#   default:
+#     driver: bridge
+#
+# volumes:
+#   data:
+#     driver: local
