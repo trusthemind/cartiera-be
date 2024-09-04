@@ -107,12 +107,25 @@ func CreateCar(c *gin.Context) {
 // @Router			/cars/all [get]
 func GetAllCars(c *gin.Context) {
 	brand := c.Query("brand")
+	pageSize, err := helpers.ParseQueryParam(c, "pageSize", 10)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page size"})
+		return
+	}
+
+	pageNumber, err := helpers.ParseQueryParam(c, "pageNumber", 1)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page number"})
+		return
+	}
+	offset := (pageNumber - 1) * pageSize
 	var cars []models.Car
 	var result *gorm.DB
+
 	if brand != "" {
-		result = initializers.DB.Where("Brand = ?", brand).Find(&cars)
+		result = initializers.DB.Where("Brand = ?", brand).Find(&cars).Offset(offset).Limit(pageSize)
 	} else {
-		result = initializers.DB.Find(&cars)
+		result = initializers.DB.Find(&cars).Offset(offset).Limit(pageSize)
 	}
 
 	if result.Error != nil {
