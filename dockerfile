@@ -8,8 +8,8 @@ WORKDIR /usr/local/src
 RUN apk --no-cache add bash make gcc gettext build-base
 
 # Copy go.mod and go.sum files for dependency management
-COPY go.mod go.sum ./
-COPY .env ./
+COPY go.mod go.sum ./ 
+COPY .env ./ 
 RUN go mod download
 
 # Copy the entire project into the container
@@ -19,7 +19,7 @@ COPY . ./
 RUN go build -o ./bin/app ./main.go || (echo "Build failed" && exit 1)
 
 # Prepare the final stage for running the application
-FROM alpine as runner
+FROM alpine AS runner
 
 # Copy the compiled application from the builder stage
 COPY --from=builder /usr/local/src/bin/app /app
